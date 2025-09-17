@@ -15,7 +15,7 @@ export const COURSES_DATA: Course[] = [
     title: 'Osnovne vještine reanimacije',
     description: 'Naučite ključne vještine kardiopulmonalne reanimacije (KPR) i korištenja automatskog vanjskog defibrilatora (AVD).',
     audience: 'Polaznici prve pomoći, studenti, nezdravstveni djelatnici',
-    imageUrl: 'https://inpulsecpr.com/wp-content/uploads/dreamstime_xxl_46129740.jpg',
+    imageUrl: 'https://nursingexercise.com/wp-content/uploads/2023/04/Cardiopulmonary-resuscitation-cpr-procedure-in-hospital.jpg',
     details: {
       duration: '4 sata',
       certification: 'Certifikat vrijedi 2 godine',
@@ -103,7 +103,7 @@ Cilj udruženja je promicanje i unaprjeđenje znanja i vještina oživljavanja �
     fullContent: `Kao i svakih pet godina, Europski Resuscitacijski Savjet (ERC) objavio je nove, ažurirane smjernice za oživljavanje. Nove smjernice stavljaju još veći naglasak na kvalitetu masaže srca, timsku suradnju i post-reanimacijsku skrb.
 
 Naše udruženje, kao punopravni član ERC-a, odmah započinje proces implementacije novih smjernica u sve naše certificirane kurseve. Svi naši instruktori proći će dodatnu obuku kako bi osigurali da polaznici dobiju najsuvremenija znanja i vještine.`,
-    imageUrl: 'https://www.cprguidelines.eu/assets/images/ERC_guidelines_2021_main_visual_twitter-84271032.jpg'
+    imageUrl: 'https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg'
   },
   {
     id: 3,
@@ -113,7 +113,7 @@ Naše udruženje, kao punopravni član ERC-a, odmah započinje proces implementa
     fullContent: `Kod iznenadnog srčanog zastoja, srce često uđe u stanje ventrikularne fibrilacije - kaotičnog, neučinkovitog treperenja. Jedini način da se ovaj poremećaj ritma prekine je primjena električnog šoka, odnosno defibrilacije.
 
 Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%. Zbog toga je postavljanje AVD uređaja na javna mjesta (trgovački centri, zračne luke, sportski objekti) i edukacija laika o njihovoj uporabi od presudne važnosti. AVD uređaji su dizajnirani da budu jednostavni za korištenje i sigurni, te glasovnim uputama vode korisnika kroz cijeli postupak.`,
-    imageUrl: 'https://www.aedsuperstore.com/assets/images/blog/2020/09/aed-shock-button.jpg'
+    imageUrl: 'https://nursingexercise.com/wp-content/uploads/2023/04/Cardiopulmonary-resuscitation-cpr-procedure-in-hospital.jpg'
   },
   {
     id: 4,
@@ -126,6 +126,6 @@ Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%.
 2.  **Osoba ne diše normalno:** Može prestati disati ili imati agonalne udahe (nepravilno, bučno disanje slično hrkanju ili krkljanju).
 
 Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i započnite s masažom srca. Ne bojte se djelovati - vaša reakcija može spasiti život. Svaka sekunda je važna!`,
-    imageUrl: 'https://www.escardio.org/static-assets/images/cpr-hands-only.jpg'
+    imageUrl: 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg'
   }
 ].sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
