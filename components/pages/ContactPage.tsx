@@ -17,10 +17,10 @@ const ContactForm: React.FC = () => {
     
     if (!form.current) return;
 
-    // TODO: Zamijenite sa vašim EmailJS podacima
-    const serviceID = 'service_pfzs5ul';
-    const templateID = 'template_lhxqaas';
-    const publicKey = 'mfhzwFF820NKsSaWk';
+    // EmailJS configuration from environment variables
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     setStatus('sending');
     setFeedbackMessage('');
