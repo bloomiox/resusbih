@@ -56,7 +56,7 @@ const FeaturedCoursesSection: React.FC<FeaturedCoursesProps> = ({ setCurrentPage
       <div className="text-center mt-12">
         <button
           onClick={() => setCurrentPage(Page.Courses)}
-          className="bg-brand-lightblue hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105"
+          className="bg-brand-blue hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105"
         >
           Svi kursevi
         </button>
@@ -66,7 +66,7 @@ const FeaturedCoursesSection: React.FC<FeaturedCoursesProps> = ({ setCurrentPage
 );
 
 const CallToActionSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
-  <section className="bg-brand-lightblue text-white" aria-labelledby="cta-title">
+  <section className="bg-brand-blue text-white" aria-labelledby="cta-title">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
       <h2 id="cta-title" className="text-3xl font-bold mb-4">Postanite član</h2>
       <p className="text-lg max-w-2xl mx-auto mb-8">

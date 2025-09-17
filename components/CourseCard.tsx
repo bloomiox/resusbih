@@ -35,7 +35,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
         <button 
           onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-6 bg-brand-lightblue hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg self-start transition-colors"
+          className="mt-6 bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg self-start transition-colors"
           aria-expanded={isExpanded}
           aria-controls={`course-details-${course.id}`}
         >
