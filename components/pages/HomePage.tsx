@@ -74,7 +74,7 @@ const CallToActionSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
       </p>
       <button
         onClick={() => setCurrentPage(Page.Contact)}
-        className="bg-brand-white text-brand-blue hover:bg-blue-900 font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105"
+        className="bg-brand-white text-brand-blue hover:bg-blue-700 font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105"
       >
         Kontaktirajte nas za članstvo
       </button>
