@@ -14,6 +14,7 @@ const CoursesManager: React.FC = () => {
     duration: '',
     certification: '',
     topics: [''],
+    registrationEnabled: true,
   });
 
   const handleEdit = (course: Course) => {
@@ -26,6 +27,7 @@ const CoursesManager: React.FC = () => {
       duration: course.details.duration,
       certification: course.details.certification,
       topics: course.details.topics,
+      registrationEnabled: course.registrationEnabled,
     });
     setIsCreating(false);
   };
@@ -40,6 +42,7 @@ const CoursesManager: React.FC = () => {
       duration: '',
       certification: '',
       topics: [''],
+      registrationEnabled: true,
     });
     setIsCreating(true);
   };
@@ -50,6 +53,7 @@ const CoursesManager: React.FC = () => {
       description: formData.description,
       audience: formData.audience,
       imageUrl: formData.imageUrl,
+      registrationEnabled: formData.registrationEnabled,
       details: {
         duration: formData.duration,
         certification: formData.certification,
@@ -82,9 +86,9 @@ const CoursesManager: React.FC = () => {
   };
 
   const removeTopic = (index: number) => {
-    setFormData({ 
-      ...formData, 
-      topics: formData.topics.filter((_, i) => i !== index) 
+    setFormData({
+      ...formData,
+      topics: formData.topics.filter((_, i) => i !== index)
     });
   };
 
@@ -170,6 +174,23 @@ const CoursesManager: React.FC = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
               />
             </div>
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="registrationEnabled"
+                  checked={formData.registrationEnabled}
+                  onChange={(e) => setFormData({ ...formData, registrationEnabled: e.target.checked })}
+                  className="h-4 w-4 text-brand-blue focus:ring-brand-blue border-gray-300 rounded"
+                />
+                <label htmlFor="registrationEnabled" className="text-sm font-medium text-gray-700">
+                  Omogući registraciju za ovaj kurs
+                </label>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Kada je omogućeno, korisnici mogu da se registruju za kurs sa sajta. Onemogućite za informativne kurseve.
+              </p>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Teme kursa</label>
               {formData.topics.map((topic, index) => (
@@ -220,7 +241,15 @@ const CoursesManager: React.FC = () => {
             <li key={course.id} className="px-6 py-4 hover:bg-gray-50 transition-colors duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">{course.title}</h3>
+                  <div className="flex items-center space-x-2 mb-1">
+                    <h3 className="text-lg font-semibold text-gray-900">{course.title}</h3>
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${course.registrationEnabled
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                      }`}>
+                      {course.registrationEnabled ? 'Registracija omogućena' : 'Samo informativno'}
+                    </span>
+                  </div>
                   <p className="text-sm text-gray-600 mt-1 line-clamp-2">{course.description}</p>
                   <p className="text-sm text-brand-blue font-medium mt-1">
                     Trajanje: {course.details.duration} | {course.audience}

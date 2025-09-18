@@ -207,10 +207,13 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
               <option value={0}>Odaberite kurs</option>
               {courses.map((course) => (
                 <option key={course.id} value={course.id}>
-                  {course.title}
+                  {course.title} {course.registrationEnabled ? '✅' : '📋'}
                 </option>
               ))}
             </select>
+            <p className="text-xs text-gray-500 mt-1">
+              ✅ = Registracija omogućena | 📋 = Samo informativno
+            </p>
           </div>
 
           <div>

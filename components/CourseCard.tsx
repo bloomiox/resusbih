@@ -38,27 +38,31 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         <div className="flex space-x-3 mt-6">
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex-1"
+            className={`bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition-colors ${course.registrationEnabled ? 'flex-1' : 'w-full'}`}
             aria-expanded={isExpanded}
             aria-controls={`course-details-${course.id}`}
           >
             {isExpanded ? 'Zatvori' : 'Saznaj više'}
           </button>
-          <button 
-            onClick={() => setShowRegistration(true)}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
-          >
-            <span>📝</span>
-            <span>Registruj se</span>
-          </button>
+          {course.registrationEnabled && (
+            <button 
+              onClick={() => setShowRegistration(true)}
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+            >
+              <span>📝</span>
+              <span>Registruj se</span>
+            </button>
+          )}
         </div>
       </div>
       
-      <CourseRegistrationModal
-        course={course}
-        isOpen={showRegistration}
-        onClose={() => setShowRegistration(false)}
-      />
+      {course.registrationEnabled && (
+        <CourseRegistrationModal
+          course={course}
+          isOpen={showRegistration}
+          onClose={() => setShowRegistration(false)}
+        />
+      )}
     </div>
   );
 };

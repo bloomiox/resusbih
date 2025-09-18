@@ -16,6 +16,7 @@ export const COURSES_DATA: Course[] = [
     description: 'Naučite ključne vještine kardiopulmonalne reanimacije (KPR) i korištenja automatskog vanjskog defibrilatora (AVD).',
     audience: 'Polaznici prve pomoći, studenti, nezdravstveni djelatnici',
     imageUrl: 'https://nursingexercise.com/wp-content/uploads/2023/04/Cardiopulmonary-resuscitation-cpr-procedure-in-hospital.jpg',
+    registrationEnabled: true,
     details: {
       duration: '4 sata',
       certification: 'Certifikat vrijedi 2 godine',
@@ -34,6 +35,7 @@ export const COURSES_DATA: Course[] = [
     description: 'Kurs za zdravstvene djelatnike koji pokriva napredne tehnike oživljavanja, farmakoterapiju i vođenje tima.',
     audience: 'Liječnici, medicinske sestre/tehničari',
     imageUrl: 'https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg',
+    registrationEnabled: true,
     details: {
       duration: '2 dana',
       certification: 'ERC ALS Provider certifikat',
@@ -52,6 +54,7 @@ export const COURSES_DATA: Course[] = [
     description: 'Specijalizirani kurs usmjeren na specifičnosti kardiopulmonalne reanimacije kod novorođenčadi, dojenčadi i djece.',
     audience: 'Pedijatri, osoblje hitne pomoći',
     imageUrl: 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg',
+    registrationEnabled: false,
     details: {
       duration: '1 dan',
       certification: 'Certifikat vrijedi 2 godine',

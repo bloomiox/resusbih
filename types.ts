@@ -21,6 +21,7 @@ export interface Course {
   audience: string;
   imageUrl: string;
   details: CourseDetails;
+  registrationEnabled: boolean;
 }
 
 export interface TeamMember {
