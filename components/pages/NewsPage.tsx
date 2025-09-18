@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NEWS_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 import { NewsArticle } from '../../types';
 import PageHeader from '../PageHeader';
 
@@ -69,6 +69,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, onClose }) => (
 
 
 const NewsPage: React.FC = () => {
+  const { news } = useData();
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
 
   const handleSelectArticle = (id: number) => {
@@ -80,7 +81,7 @@ const NewsPage: React.FC = () => {
     setSelectedArticleId(null);
   };
 
-  const selectedArticle = selectedArticleId ? NEWS_DATA.find(article => article.id === selectedArticleId) : null;
+  const selectedArticle = selectedArticleId ? news.find(article => article.id === selectedArticleId) : null;
 
   return (
     <div className="animate-fade-in">
@@ -93,8 +94,12 @@ const NewsPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {selectedArticle ? (
             <ArticleDetail article={selectedArticle} onClose={handleCloseArticle} />
+          ) : news.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Trenutno nema dostupnih novosti.</p>
+            </div>
           ) : (
-            <ArticleList articles={NEWS_DATA} onSelectArticle={handleSelectArticle} />
+            <ArticleList articles={news} onSelectArticle={handleSelectArticle} />
           )}
         </div>
       </div>

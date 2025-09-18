@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Page } from './types';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { DataProvider } from './contexts/DataContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './components/pages/HomePage';
@@ -61,7 +62,9 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <AppContent />
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
     </AuthProvider>
   );
 };

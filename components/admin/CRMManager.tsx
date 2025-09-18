@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { CourseParticipant } from '../../types';
-import { PARTICIPANTS_DATA, COURSES_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 import ParticipantForm from './ParticipantForm';
 import CertificateGenerator from './CertificateGenerator';
 
 const CRMManager: React.FC = () => {
-  const [participants, setParticipants] = useState<CourseParticipant[]>(PARTICIPANTS_DATA);
+  const { participants, addParticipant, updateParticipant, deleteParticipant, courses } = useData();
   const [editingParticipant, setEditingParticipant] = useState<CourseParticipant | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState<CourseParticipant | null>(null);
@@ -25,17 +25,9 @@ const CRMManager: React.FC = () => {
 
   const handleSave = (participantData: Omit<CourseParticipant, 'id'>) => {
     if (editingParticipant) {
-      setParticipants(participants.map(p => 
-        p.id === editingParticipant.id 
-          ? { ...participantData, id: editingParticipant.id }
-          : p
-      ));
+      updateParticipant(editingParticipant.id, participantData);
     } else {
-      const newParticipant: CourseParticipant = {
-        ...participantData,
-        id: Math.max(...participants.map(p => p.id)) + 1,
-      };
-      setParticipants([...participants, newParticipant]);
+      addParticipant(participantData);
     }
     setEditingParticipant(null);
     setIsCreating(false);
@@ -43,7 +35,7 @@ const CRMManager: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (window.confirm('Jeste li sigurni da želite obrisati ovog polaznika?')) {
-      setParticipants(participants.filter(p => p.id !== id));
+      deleteParticipant(id);
     }
   };
 
@@ -58,24 +50,18 @@ const CRMManager: React.FC = () => {
   };
 
   const handleMarkCompleted = (id: number) => {
-    setParticipants(participants.map(p => 
-      p.id === id 
-        ? { 
-            ...p, 
-            status: 'completed' as const,
-            completionDate: new Date().toISOString().split('T')[0],
-            certificateNumber: `RESUSBIH-${new Date().getFullYear()}-${String(Math.max(...participants.map(p => parseInt(p.certificateNumber?.split('-')[2] || '0'))) + 1).padStart(3, '0')}`
-          }
-        : p
-    ));
+    const participant = participants.find(p => p.id === id);
+    if (participant) {
+      updateParticipant(id, {
+        status: 'completed' as const,
+        completionDate: new Date().toISOString().split('T')[0],
+        certificateNumber: `RESUSBIH-${new Date().getFullYear()}-${String(Math.max(...participants.map(p => parseInt(p.certificateNumber?.split('-')[2] || '0'))) + 1).padStart(3, '0')}`
+      });
+    }
   };
 
   const handleIssueCertificate = (id: number) => {
-    setParticipants(participants.map(p => 
-      p.id === id 
-        ? { ...p, certificateIssued: true }
-        : p
-    ));
+    updateParticipant(id, { certificateIssued: true });
   };
 
   const filteredParticipants = participants.filter(participant => {
@@ -131,7 +117,7 @@ const CRMManager: React.FC = () => {
     return (
       <ParticipantForm
         participant={editingParticipant}
-        courses={COURSES_DATA}
+        courses={courses}
         onSave={handleSave}
         onCancel={handleCancel}
       />

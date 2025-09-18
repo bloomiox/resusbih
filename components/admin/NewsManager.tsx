@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { NewsArticle } from '../../types';
-import { NEWS_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 
 const NewsManager: React.FC = () => {
-  const [articles, setArticles] = useState<NewsArticle[]>(NEWS_DATA);
+  const { news: articles, addNews, updateNews, deleteNews } = useData();
   const [editingArticle, setEditingArticle] = useState<NewsArticle | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,18 +41,10 @@ const NewsManager: React.FC = () => {
   const handleSave = () => {
     if (editingArticle) {
       // Update existing article
-      setArticles(articles.map(article => 
-        article.id === editingArticle.id 
-          ? { ...editingArticle, ...formData }
-          : article
-      ));
+      updateNews(editingArticle.id, formData);
     } else {
       // Create new article
-      const newArticle: NewsArticle = {
-        id: Math.max(...articles.map(a => a.id)) + 1,
-        ...formData,
-      };
-      setArticles([newArticle, ...articles]);
+      addNews(formData);
     }
     setEditingArticle(null);
     setIsCreating(false);
@@ -60,7 +52,7 @@ const NewsManager: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (window.confirm('Jeste li sigurni da želite obrisati ovaj članak?')) {
-      setArticles(articles.filter(article => article.id !== id));
+      deleteNews(id);
     }
   };
 

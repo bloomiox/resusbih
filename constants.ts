@@ -128,7 +128,7 @@ Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%.
 Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i započnite s masažom srca. Ne bojte se djelovati - vaša reakcija može spasiti život. Svaka sekunda je važna!`,
     imageUrl: 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg'
   }
-].sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
+];
 
 // Sample CRM data for course participants
 export const PARTICIPANTS_DATA: CourseParticipant[] = [

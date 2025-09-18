@@ -1,13 +1,18 @@
 import React from 'react';
 import { Page, Course } from '../../types';
-import { COURSES_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 import CourseCard from '../CourseCard';
 
 interface PageSetterProps {
   setCurrentPage: (page: Page) => void;
 }
 
-const HeroSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
+interface HeroSectionProps extends PageSetterProps {
+  heroTitle: string;
+  heroSubtitle: string;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ setCurrentPage, heroTitle, heroSubtitle }) => (
   <section
     className="relative bg-cover bg-center text-white py-32 md:py-48"
     style={{ backgroundImage: 'url(https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg)' }}
@@ -15,9 +20,9 @@ const HeroSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
   >
     <div className="absolute inset-0 bg-brand-blue bg-opacity-60"></div>
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-      <h1 id="hero-title" className="text-4xl md:text-6xl font-black mb-4 tracking-tight">Udruženje ¨Resuscitacijski savjet¨ BiH.</h1>
+      <h1 id="hero-title" className="text-4xl md:text-6xl font-black mb-4 tracking-tight">{heroTitle}</h1>
       <p className="text-lg md:text-2xl mb-8 max-w-3xl mx-auto">
-        Postanite karika u lancu preživljavanja. Naši kursevi prve pomoći i oživljavanja osnažuju vas da djelujete kada je najpotrebnije.
+        {heroSubtitle}
       </p>
       <button
         onClick={() => setCurrentPage(Page.Courses)}
@@ -29,12 +34,16 @@ const HeroSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
   </section>
 );
 
-const MissionSection: React.FC = () => (
+interface MissionSectionProps {
+  aboutSection: string;
+}
+
+const MissionSection: React.FC<MissionSectionProps> = ({ aboutSection }) => (
   <section className="py-16 bg-brand-white" aria-labelledby="mission-title">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 id="mission-title" className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Naša Misija</h2>
       <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-        Naša misija je promicanje i unaprjeđenje znanja i vještina oživljavanja u Bosni i Hercegovini, kako među zdravstvenim djelatnicima, tako i u široj javnosti. Vjerujemo da edukacijom možemo značajno povećati stopu preživljavanja kod iznenadnog srčanog zastoja.
+        {aboutSection}
       </p>
     </div>
   </section>
@@ -84,12 +93,17 @@ const CallToActionSection: React.FC<PageSetterProps> = ({ setCurrentPage }) => (
 
 
 const HomePage: React.FC<PageSetterProps> = ({ setCurrentPage }) => {
-  const featuredCourses = COURSES_DATA.slice(0, 3);
+  const { courses, pageContent } = useData();
+  const featuredCourses = courses.slice(0, 3);
 
   return (
     <div className="animate-fade-in">
-      <HeroSection setCurrentPage={setCurrentPage} />
-      <MissionSection />
+      <HeroSection 
+        setCurrentPage={setCurrentPage} 
+        heroTitle={pageContent.home.heroTitle}
+        heroSubtitle={pageContent.home.heroSubtitle}
+      />
+      <MissionSection aboutSection={pageContent.home.aboutSection} />
       <FeaturedCoursesSection setCurrentPage={setCurrentPage} courses={featuredCourses} />
       <CallToActionSection setCurrentPage={setCurrentPage} />
     </div>

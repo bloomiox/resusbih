@@ -1,44 +1,46 @@
 import React from 'react';
-import { NEWS_DATA, COURSES_DATA, TEAM_DATA, PARTICIPANTS_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 
 interface DashboardOverviewProps {
   setActiveTab: (tab: string) => void;
 }
 
 const DashboardOverview: React.FC<DashboardOverviewProps> = ({ setActiveTab }) => {
+  const { news, courses, team, participants } = useData();
+  
   const stats = [
     {
       title: 'Ukupno novosti',
-      value: NEWS_DATA.length,
+      value: news.length,
       icon: '📰',
       color: 'bg-green-500',
       action: () => setActiveTab('news'),
     },
     {
       title: 'Aktivni kursevi',
-      value: COURSES_DATA.length,
+      value: courses.length,
       icon: '🎓',
       color: 'bg-purple-500',
       action: () => setActiveTab('courses'),
     },
     {
       title: 'Polaznici',
-      value: PARTICIPANTS_DATA.length,
+      value: participants.length,
       icon: '👤',
       color: 'bg-teal-500',
       action: () => setActiveTab('crm'),
     },
     {
       title: 'Članovi tima',
-      value: TEAM_DATA.length,
+      value: team.length,
       icon: '👥',
       color: 'bg-indigo-500',
       action: () => setActiveTab('team'),
     },
   ];
 
-  const recentNews = NEWS_DATA.slice(0, 3);
-  const recentCourses = COURSES_DATA.slice(0, 2);
+  const recentNews = news.slice(0, 3);
+  const recentCourses = courses.slice(0, 2);
 
   return (
     <div className="space-y-6">
@@ -139,7 +141,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({ setActiveTab }) =
             </button>
           </div>
           <div className="space-y-3">
-            {PARTICIPANTS_DATA.slice(0, 3).map((participant) => (
+            {participants.slice(0, 3).map((participant) => (
               <div key={participant.id} className="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg">
                 <div className="bg-teal-100 rounded-full p-2">
                   <span className="text-teal-600">👤</span>

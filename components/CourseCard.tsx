@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Course } from '../types';
+import CourseRegistrationModal from './CourseRegistrationModal';
 
 interface CourseCardProps {
   course: Course;
@@ -8,6 +9,7 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl">
@@ -33,15 +35,30 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           </div>
         </div>
 
-        <button 
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-6 bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg self-start transition-colors"
-          aria-expanded={isExpanded}
-          aria-controls={`course-details-${course.id}`}
-        >
-          {isExpanded ? 'Zatvori' : 'Saznaj više'}
-        </button>
+        <div className="flex space-x-3 mt-6">
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex-1"
+            aria-expanded={isExpanded}
+            aria-controls={`course-details-${course.id}`}
+          >
+            {isExpanded ? 'Zatvori' : 'Saznaj više'}
+          </button>
+          <button 
+            onClick={() => setShowRegistration(true)}
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+          >
+            <span>📝</span>
+            <span>Registruj se</span>
+          </button>
+        </div>
       </div>
+      
+      <CourseRegistrationModal
+        course={course}
+        isOpen={showRegistration}
+        onClose={() => setShowRegistration(false)}
+      />
     </div>
   );
 };

@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
 import { PageContent } from '../../types';
+import { useData } from '../../contexts/DataContext';
 
 const PageContentManager: React.FC = () => {
-  const [pageContent, setPageContent] = useState<PageContent>({
-    home: {
-      heroTitle: 'Udruženje Resuscitacijski savjet u Bosni i Hercegovini',
-      heroSubtitle: 'Znanje koje spašava živote',
-      aboutSection: 'Naše udruženje je posvećeno promicanju i unaprjeđenju znanja i vještina oživljavanja širom Bosne i Hercegovine.',
-    },
-    about: {
-      title: 'O nama',
-      content: 'Udruženje Resuscitacijski savjet u Bosni i Hercegovini osnovano je s ciljem promicanja i unaprjeđenja znanja i vještina oživljavanja.',
-    },
-    contact: {
-      title: 'Kontakt',
-      content: 'Kontaktirajte nas za više informacija o našim kursevima i aktivnostima.',
-    },
-  });
+  const { pageContent, updatePageContent } = useData();
 
   const [editingPage, setEditingPage] = useState<keyof PageContent | null>(null);
   const [tempContent, setTempContent] = useState<any>({});
@@ -28,10 +15,7 @@ const PageContentManager: React.FC = () => {
 
   const handleSave = () => {
     if (editingPage) {
-      setPageContent({
-        ...pageContent,
-        [editingPage]: tempContent,
-      });
+      updatePageContent(editingPage, tempContent);
       setEditingPage(null);
       setTempContent({});
     }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Course } from '../../types';
-import { COURSES_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 
 const CoursesManager: React.FC = () => {
-  const [courses, setCourses] = useState<Course[]>(COURSES_DATA);
+  const { courses, addCourse, updateCourse, deleteCourse } = useData();
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
@@ -58,17 +58,9 @@ const CoursesManager: React.FC = () => {
     };
 
     if (editingCourse) {
-      setCourses(courses.map(course => 
-        course.id === editingCourse.id 
-          ? { ...editingCourse, ...courseData }
-          : course
-      ));
+      updateCourse(editingCourse.id, courseData);
     } else {
-      const newCourse: Course = {
-        id: Math.max(...courses.map(c => c.id)) + 1,
-        ...courseData,
-      };
-      setCourses([...courses, newCourse]);
+      addCourse(courseData);
     }
     setEditingCourse(null);
     setIsCreating(false);
@@ -76,7 +68,7 @@ const CoursesManager: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (window.confirm('Jeste li sigurni da želite obrisati ovaj kurs?')) {
-      setCourses(courses.filter(course => course.id !== id));
+      deleteCourse(id);
     }
   };
 

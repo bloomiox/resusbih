@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { TeamMember } from '../../types';
-import { TEAM_DATA } from '../../constants';
+import { useData } from '../../contexts/DataContext';
 
 const TeamManager: React.FC = () => {
-  const [members, setMembers] = useState<TeamMember[]>(TEAM_DATA);
+  const { team: members, addTeamMember, updateTeamMember, deleteTeamMember } = useData();
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,17 +37,9 @@ const TeamManager: React.FC = () => {
 
   const handleSave = () => {
     if (editingMember) {
-      setMembers(members.map(member => 
-        member.id === editingMember.id 
-          ? { ...editingMember, ...formData }
-          : member
-      ));
+      updateTeamMember(editingMember.id, formData);
     } else {
-      const newMember: TeamMember = {
-        id: Math.max(...members.map(m => m.id)) + 1,
-        ...formData,
-      };
-      setMembers([...members, newMember]);
+      addTeamMember(formData);
     }
     setEditingMember(null);
     setIsCreating(false);
@@ -55,7 +47,7 @@ const TeamManager: React.FC = () => {
 
   const handleDelete = (id: number) => {
     if (window.confirm('Jeste li sigurni da želite ukloniti ovog člana tima?')) {
-      setMembers(members.filter(member => member.id !== id));
+      deleteTeamMember(id);
     }
   };
 
