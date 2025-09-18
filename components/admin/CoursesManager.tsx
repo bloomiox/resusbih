@@ -14,7 +14,7 @@ const CoursesManager: React.FC = () => {
     duration: '',
     certification: '',
     topics: [''],
-    registrationEnabled: true,
+    registrationEnabled: false,
   });
 
   const handleEdit = (course: Course) => {
@@ -42,7 +42,7 @@ const CoursesManager: React.FC = () => {
       duration: '',
       certification: '',
       topics: [''],
-      registrationEnabled: true,
+      registrationEnabled: false,
     });
     setIsCreating(true);
   };
