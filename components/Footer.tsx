@@ -1,6 +1,11 @@
 import React from 'react';
+import { Page } from '../types';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  setCurrentPage: (page: Page) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
   return (
     <footer className="bg-brand-blue text-brand-white mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -24,7 +29,21 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Udruženje Resuscitacijski savjet u Bosni i Hercegovini. Sva prava pridržana.</p>
+          <p>
+            <span 
+              onClick={() => setCurrentPage(Page.Login)}
+              className="cursor-pointer hover:text-brand-red transition-colors"
+              title="Admin Login"
+            >
+              &copy;
+            </span>{' '}
+            {new Date().getFullYear()} Udruženje Resuscitacijski savjet u Bosni i Hercegovini. Sva prava pridržana.
+            <span 
+              onClick={() => setCurrentPage(Page.Login)}
+              className="inline-block w-2 h-2 bg-gray-600 rounded-full ml-2 cursor-pointer hover:bg-brand-red transition-colors"
+              title="Admin Login"
+            ></span>
+          </p>
         </div>
       </div>
     </footer>

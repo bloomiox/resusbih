@@ -1,5 +1,5 @@
 
-import { Page, Course, TeamMember, NewsArticle } from './types';
+import { Page, Course, TeamMember, NewsArticle, CourseParticipant } from './types';
 
 export const NAV_LINKS = [
   { name: 'Početna', page: Page.Home },
@@ -35,15 +35,15 @@ export const COURSES_DATA: Course[] = [
     audience: 'Liječnici, medicinske sestre/tehničari',
     imageUrl: 'https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg',
     details: {
-        duration: '2 dana',
-        certification: 'ERC ALS Provider certifikat',
-        topics: [
-            'Napredno osiguravanje dišnog puta',
-            'Prepoznavanje i terapija poremećaja ritma',
-            'Primjena lijekova u oživljavanju',
-            'Vođenje reanimacijskog tima (CRM)',
-            'Post-reanimacijska skrb'
-        ]
+      duration: '2 dana',
+      certification: 'ERC ALS Provider certifikat',
+      topics: [
+        'Napredno osiguravanje dišnog puta',
+        'Prepoznavanje i terapija poremećaja ritma',
+        'Primjena lijekova u oživljavanju',
+        'Vođenje reanimacijskog tima (CRM)',
+        'Post-reanimacijska skrb'
+      ]
     }
   },
   {
@@ -53,17 +53,17 @@ export const COURSES_DATA: Course[] = [
     audience: 'Pedijatri, osoblje hitne pomoći',
     imageUrl: 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg',
     details: {
-        duration: '1 dan',
-        certification: 'Certifikat vrijedi 2 godine',
-        topics: [
-            'Specifičnosti dječje anatomije i fiziologije',
-            'Oživljavanje novorođenčeta',
-            'Hitna stanja u pedijatriji',
-            'Timska dinamika'
-        ]
+      duration: '1 dan',
+      certification: 'Certifikat vrijedi 2 godine',
+      topics: [
+        'Specifičnosti dječje anatomije i fiziologije',
+        'Oživljavanje novorođenčeta',
+        'Hitna stanja u pedijatriji',
+        'Timska dinamika'
+      ]
     }
   },
- ];
+];
 
 export const TEAM_DATA: TeamMember[] = [
   {
@@ -95,7 +95,7 @@ Adresa sjedišta je: Bihać, ulica Jablanska broj 155.
 Cilj udruženja je promicanje i unaprjeđenje znanja i vještina oživljavanja širom zemlje, u skladu s najnovijim europskim i svjetskim smjernicama. Radujemo se budućim projektima i suradnji sa svim zainteresiranim stranama u svrhu spašavanja života.`,
     imageUrl: 'https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/RESUS%20LOGO%20(3).png'
   },
-   {
+  {
     id: 2,
     title: 'Objavljene nove ERC smjernice za reanimaciju 2025',
     publishDate: '25.09.2025.',
@@ -129,3 +129,93 @@ Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i zapo
     imageUrl: 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg'
   }
 ].sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
+
+// Sample CRM data for course participants
+export const PARTICIPANTS_DATA: CourseParticipant[] = [
+  {
+    id: 1,
+    firstName: 'Marko',
+    lastName: 'Petrović',
+    email: 'marko.petrovic@email.com',
+    phone: '+387 61 123 456',
+    address: 'Sarajevo, Bosna i Hercegovina',
+    dateOfBirth: '1985-03-15',
+    profession: 'Medicinska sestra',
+    courseId: 1,
+    courseName: 'Osnovne vještine reanimacije',
+    registrationDate: '2025-01-15',
+    completionDate: '2025-01-20',
+    certificateIssued: true,
+    certificateNumber: 'RESUSBIH-2025-001',
+    status: 'completed',
+    notes: 'Odličan polaznik, aktivno sudjelovanje'
+  },
+  {
+    id: 2,
+    firstName: 'Ana',
+    lastName: 'Marić',
+    email: 'ana.maric@email.com',
+    phone: '+387 62 234 567',
+    address: 'Banja Luka, Bosna i Hercegovina',
+    dateOfBirth: '1990-07-22',
+    profession: 'Liječnik',
+    courseId: 2,
+    courseName: 'Napredni kurs oživljavanja',
+    registrationDate: '2025-01-10',
+    completionDate: '2025-01-12',
+    certificateIssued: true,
+    certificateNumber: 'RESUSBIH-2025-002',
+    status: 'completed',
+    notes: 'Izvrsno znanje, preporučuje se za instruktora'
+  },
+  {
+    id: 3,
+    firstName: 'Stefan',
+    lastName: 'Nikolić',
+    email: 'stefan.nikolic@email.com',
+    phone: '+387 63 345 678',
+    address: 'Tuzla, Bosna i Hercegovina',
+    dateOfBirth: '1988-11-08',
+    profession: 'Medicinski tehničar',
+    courseId: 1,
+    courseName: 'Osnovne vještine reanimacije',
+    registrationDate: '2025-01-18',
+    status: 'registered',
+    certificateIssued: false,
+    notes: 'Čeka početak kursa'
+  },
+  {
+    id: 4,
+    firstName: 'Milica',
+    lastName: 'Jovanović',
+    email: 'milica.jovanovic@email.com',
+    phone: '+387 64 456 789',
+    address: 'Mostar, Bosna i Hercegovina',
+    dateOfBirth: '1992-05-14',
+    profession: 'Pedijatar',
+    courseId: 3,
+    courseName: 'Oživljavanje djece (PLS)',
+    registrationDate: '2025-01-12',
+    completionDate: '2025-01-13',
+    certificateIssued: false,
+    certificateNumber: 'RESUSBIH-2025-003',
+    status: 'completed',
+    notes: 'Završila kurs, čeka izdavanje certifikata'
+  },
+  {
+    id: 5,
+    firstName: 'Aleksandar',
+    lastName: 'Stojanović',
+    email: 'aleksandar.stojanovic@email.com',
+    phone: '+387 65 567 890',
+    address: 'Zenica, Bosna i Hercegovina',
+    dateOfBirth: '1987-09-30',
+    profession: 'Hitna pomoć',
+    courseId: 2,
+    courseName: 'Napredni kurs oživljavanja',
+    registrationDate: '2025-01-20',
+    status: 'registered',
+    certificateIssued: false,
+    notes: 'Iskusan u hitnoj medicini'
+  }
+];
