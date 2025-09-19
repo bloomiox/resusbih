@@ -1,35 +1,43 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { NewsArticle, Course, TeamMember, CourseParticipant, PageContent } from '../types';
-import { NEWS_DATA, COURSES_DATA, TEAM_DATA, PARTICIPANTS_DATA } from '../constants';
+import { newsService, coursesService, teamService, participantsService, pageContentService } from '../services/supabaseService';
 
 interface DataContextType {
+  // Loading states
+  loading: boolean;
+  error: string | null;
+  
   // News
   news: NewsArticle[];
-  addNews: (article: Omit<NewsArticle, 'id'>) => void;
-  updateNews: (id: number, article: Partial<NewsArticle>) => void;
-  deleteNews: (id: number) => void;
+  addNews: (article: Omit<NewsArticle, 'id'>) => Promise<void>;
+  updateNews: (id: number, article: Partial<NewsArticle>) => Promise<void>;
+  deleteNews: (id: number) => Promise<void>;
   
   // Courses
   courses: Course[];
-  addCourse: (course: Omit<Course, 'id'>) => void;
-  updateCourse: (id: number, course: Partial<Course>) => void;
-  deleteCourse: (id: number) => void;
+  addCourse: (course: Omit<Course, 'id'>) => Promise<void>;
+  updateCourse: (id: number, course: Partial<Course>) => Promise<void>;
+  deleteCourse: (id: number) => Promise<void>;
   
   // Team
   team: TeamMember[];
-  addTeamMember: (member: Omit<TeamMember, 'id'>) => void;
-  updateTeamMember: (id: number, member: Partial<TeamMember>) => void;
-  deleteTeamMember: (id: number) => void;
+  addTeamMember: (member: Omit<TeamMember, 'id'>) => Promise<void>;
+  updateTeamMember: (id: number, member: Partial<TeamMember>) => Promise<void>;
+  deleteTeamMember: (id: number) => Promise<void>;
   
   // Participants
   participants: CourseParticipant[];
-  addParticipant: (participant: Omit<CourseParticipant, 'id'>) => void;
-  updateParticipant: (id: number, participant: Partial<CourseParticipant>) => void;
-  deleteParticipant: (id: number) => void;
+  addParticipant: (participant: Omit<CourseParticipant, 'id'>) => Promise<void>;
+  updateParticipant: (id: number, participant: Partial<CourseParticipant>) => Promise<void>;
+  deleteParticipant: (id: number) => Promise<void>;
+  registerForCourse: (registration: any) => Promise<void>;
   
   // Page Content
   pageContent: PageContent;
-  updatePageContent: (page: keyof PageContent, content: any) => void;
+  updatePageContent: (page: keyof PageContent, content: any) => Promise<void>;
+  
+  // Refresh data
+  refreshData: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -47,119 +55,238 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  const [news, setNews] = useState<NewsArticle[]>(
-    NEWS_DATA.sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime())
-  );
-  const [courses, setCourses] = useState<Course[]>(COURSES_DATA);
-  const [team, setTeam] = useState<TeamMember[]>(TEAM_DATA);
-  const [participants, setParticipants] = useState<CourseParticipant[]>(PARTICIPANTS_DATA);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [participants, setParticipants] = useState<CourseParticipant[]>([]);
   const [pageContent, setPageContent] = useState<PageContent>({
     home: {
       heroTitle: 'Udruženje Resuscitacijski savjet u Bosni i Hercegovini',
       heroSubtitle: 'Znanje koje spašava živote',
-      aboutSection: 'Naša misija je promicanje i unaprjeđenje znanja i vještina oživljavanja u Bosni i Hercegovini, kako među zdravstvenim djelatnicima, tako i u široj javnosti. Vjerujemo da edukacijom možemo značajno povećati stopu preživljavanja kod iznenadnog srčanog zastoja.',
+      aboutSection: 'Naša misija je promicanje i unaprjeđenje znanja i vještina oživljavanja u Bosni i Hercegovini.',
     },
     about: {
       title: 'O nama',
-      content: 'Udruženje Resuscitacijski savjet u Bosni i Hercegovini osnovano je s ciljem promicanja i unaprjeđenja znanja i vještina oživljavanja širom zemlje, u skladu s najnovijim europskim i svjetskim smjernicama. Radujemo se budućim projektima i suradnji sa svim zainteresiranim stranama u svrhu spašavanja života.',
+      content: 'Udruženje Resuscitacijski savjet u Bosni i Hercegovini osnovano je s ciljem promicanja i unaprjeđenja znanja i vještina oživljavanja.',
     },
     contact: {
       title: 'Kontakt',
-      content: 'Kontaktirajte nas za više informacija o našim kursevima i aktivnostima. Naš tim stručnjaka spreman je odgovoriti na sva vaša pitanja.',
+      content: 'Kontaktirajte nas za više informacija o našim kursevima i aktivnostima.',
     },
   });
 
+  // Load initial data
+  useEffect(() => {
+    refreshData();
+  }, []);
+
+  const refreshData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const [newsData, coursesData, teamData, pageContentData] = await Promise.all([
+        newsService.getAll(),
+        coursesService.getAll(),
+        teamService.getAll(),
+        pageContentService.getAll(),
+      ]);
+
+      setNews(newsData);
+      setCourses(coursesData);
+      setTeam(teamData);
+      setPageContent(pageContentData);
+
+      // Load participants
+      try {
+        const participantsData = await participantsService.getAll();
+        setParticipants(participantsData);
+      } catch (error) {
+        // Ignore auth errors for participants - they're admin-only
+        console.log('Participants not loaded (admin-only)');
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setError(error instanceof Error ? error.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // News functions
-  const addNews = (article: Omit<NewsArticle, 'id'>) => {
-    const newArticle: NewsArticle = {
-      ...article,
-      id: Math.max(...news.map(n => n.id)) + 1,
-    };
-    const updatedNews = [newArticle, ...news];
-    // Sort by date (newest first)
-    updatedNews.sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
-    setNews(updatedNews);
+  const addNews = async (article: Omit<NewsArticle, 'id'>) => {
+    try {
+      const newArticle = await newsService.create(article);
+      setNews(prev => [newArticle, ...prev].sort((a, b) => 
+        new Date(b.publishDate.split('.').reverse().join('-')).getTime() - 
+        new Date(a.publishDate.split('.').reverse().join('-')).getTime()
+      ));
+    } catch (error) {
+      console.error('Error adding news:', error);
+      throw error;
+    }
   };
 
-  const updateNews = (id: number, updatedArticle: Partial<NewsArticle>) => {
-    const updatedNews = news.map(article => 
-      article.id === id ? { ...article, ...updatedArticle } : article
-    );
-    // Sort by date (newest first)
-    updatedNews.sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
-    setNews(updatedNews);
+  const updateNews = async (id: number, updates: Partial<NewsArticle>) => {
+    try {
+      const updatedArticle = await newsService.update(id, updates);
+      setNews(prev => prev.map(article => 
+        article.id === id ? updatedArticle : article
+      ).sort((a, b) => 
+        new Date(b.publishDate.split('.').reverse().join('-')).getTime() - 
+        new Date(a.publishDate.split('.').reverse().join('-')).getTime()
+      ));
+    } catch (error) {
+      console.error('Error updating news:', error);
+      throw error;
+    }
   };
 
-  const deleteNews = (id: number) => {
-    setNews(news.filter(article => article.id !== id));
+  const deleteNews = async (id: number) => {
+    try {
+      await newsService.delete(id);
+      setNews(prev => prev.filter(article => article.id !== id));
+    } catch (error) {
+      console.error('Error deleting news:', error);
+      throw error;
+    }
   };
 
   // Courses functions
-  const addCourse = (course: Omit<Course, 'id'>) => {
-    const newCourse: Course = {
-      ...course,
-      id: Math.max(...courses.map(c => c.id)) + 1,
-    };
-    setCourses([...courses, newCourse]);
+  const addCourse = async (course: Omit<Course, 'id'>) => {
+    try {
+      const newCourse = await coursesService.create(course);
+      setCourses(prev => [...prev, newCourse]);
+    } catch (error) {
+      console.error('Error adding course:', error);
+      throw error;
+    }
   };
 
-  const updateCourse = (id: number, updatedCourse: Partial<Course>) => {
-    setCourses(courses.map(course => 
-      course.id === id ? { ...course, ...updatedCourse } : course
-    ));
+  const updateCourse = async (id: number, updates: Partial<Course>) => {
+    try {
+      const updatedCourse = await coursesService.update(id, updates);
+      setCourses(prev => prev.map(course => 
+        course.id === id ? updatedCourse : course
+      ));
+    } catch (error) {
+      console.error('Error updating course:', error);
+      throw error;
+    }
   };
 
-  const deleteCourse = (id: number) => {
-    setCourses(courses.filter(course => course.id !== id));
+  const deleteCourse = async (id: number) => {
+    try {
+      await coursesService.delete(id);
+      setCourses(prev => prev.filter(course => course.id !== id));
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      throw error;
+    }
   };
 
   // Team functions
-  const addTeamMember = (member: Omit<TeamMember, 'id'>) => {
-    const newMember: TeamMember = {
-      ...member,
-      id: Math.max(...team.map(m => m.id)) + 1,
-    };
-    setTeam([...team, newMember]);
+  const addTeamMember = async (member: Omit<TeamMember, 'id'>) => {
+    try {
+      const newMember = await teamService.create(member);
+      setTeam(prev => [...prev, newMember]);
+    } catch (error) {
+      console.error('Error adding team member:', error);
+      throw error;
+    }
   };
 
-  const updateTeamMember = (id: number, updatedMember: Partial<TeamMember>) => {
-    setTeam(team.map(member => 
-      member.id === id ? { ...member, ...updatedMember } : member
-    ));
+  const updateTeamMember = async (id: number, updates: Partial<TeamMember>) => {
+    try {
+      const updatedMember = await teamService.update(id, updates);
+      setTeam(prev => prev.map(member => 
+        member.id === id ? updatedMember : member
+      ));
+    } catch (error) {
+      console.error('Error updating team member:', error);
+      throw error;
+    }
   };
 
-  const deleteTeamMember = (id: number) => {
-    setTeam(team.filter(member => member.id !== id));
+  const deleteTeamMember = async (id: number) => {
+    try {
+      await teamService.delete(id);
+      setTeam(prev => prev.filter(member => member.id !== id));
+    } catch (error) {
+      console.error('Error deleting team member:', error);
+      throw error;
+    }
   };
 
   // Participants functions
-  const addParticipant = (participant: Omit<CourseParticipant, 'id'>) => {
-    const newParticipant: CourseParticipant = {
-      ...participant,
-      id: Math.max(...participants.map(p => p.id)) + 1,
-    };
-    setParticipants([...participants, newParticipant]);
+  const addParticipant = async (participant: Omit<CourseParticipant, 'id'>) => {
+    try {
+      const newParticipant = await participantsService.create(participant);
+      setParticipants(prev => [newParticipant, ...prev]);
+    } catch (error) {
+      console.error('Error adding participant:', error);
+      throw error;
+    }
   };
 
-  const updateParticipant = (id: number, updatedParticipant: Partial<CourseParticipant>) => {
-    setParticipants(participants.map(participant => 
-      participant.id === id ? { ...participant, ...updatedParticipant } : participant
-    ));
+  const updateParticipant = async (id: number, updates: Partial<CourseParticipant>) => {
+    try {
+      const updatedParticipant = await participantsService.update(id, updates);
+      setParticipants(prev => prev.map(participant => 
+        participant.id === id ? updatedParticipant : participant
+      ));
+    } catch (error) {
+      console.error('Error updating participant:', error);
+      throw error;
+    }
   };
 
-  const deleteParticipant = (id: number) => {
-    setParticipants(participants.filter(participant => participant.id !== id));
+  const deleteParticipant = async (id: number) => {
+    try {
+      await participantsService.delete(id);
+      setParticipants(prev => prev.filter(participant => participant.id !== id));
+    } catch (error) {
+      console.error('Error deleting participant:', error);
+      throw error;
+    }
+  };
+
+  const registerForCourse = async (registration: any) => {
+    try {
+      const result = await participantsService.create(registration);
+      // Refresh participants data
+      try {
+        const participantsData = await participantsService.getAll();
+        setParticipants(participantsData);
+      } catch (error) {
+        // Ignore if error
+      }
+      return result;
+    } catch (error) {
+      console.error('Error registering for course:', error);
+      throw error;
+    }
   };
 
   // Page content functions
-  const updatePageContent = (page: keyof PageContent, content: any) => {
-    setPageContent(prev => ({
-      ...prev,
-      [page]: content,
-    }));
+  const updatePageContent = async (page: keyof PageContent, content: any) => {
+    try {
+      await pageContentService.update(page, content);
+      setPageContent(prev => ({
+        ...prev,
+        [page]: content,
+      }));
+    } catch (error) {
+      console.error('Error updating page content:', error);
+      throw error;
+    }
   };
 
   const value: DataContextType = {
+    loading,
+    error,
     news,
     addNews,
     updateNews,
@@ -176,8 +303,10 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     addParticipant,
     updateParticipant,
     deleteParticipant,
+    registerForCourse,
     pageContent,
     updatePageContent,
+    refreshData,
   };
 
   return (
