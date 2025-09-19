@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Course } from '../types';
 import { useData } from '../contexts/DataContext';
+import { analyticsService } from '../services/analyticsService';
 
 interface CourseRegistrationModalProps {
   course: Course;
@@ -46,10 +47,19 @@ const CourseRegistrationModal: React.FC<CourseRegistrationModalProps> = ({
     setIsSubmitting(true);
 
     try {
+      // Track form submission
+      await analyticsService.trackRegistrationStep(course.id, 'form_submit');
+
       // Register for course using API
       await registerForCourse({
         ...formData,
         courseId: course.id,
+      });
+
+      // Track successful registration
+      await analyticsService.trackRegistrationStep(course.id, 'registration_complete', {
+        participant_name: `${formData.firstName} ${formData.lastName}`,
+        profession: formData.profession,
       });
 
       setSubmitted(true);

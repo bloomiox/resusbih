@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Course } from '../types';
 import CourseRegistrationModal from './CourseRegistrationModal';
+import { analyticsService } from '../services/analyticsService';
 
 interface CourseCardProps {
   course: Course;
@@ -10,6 +11,20 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
+
+  const handleExpand = () => {
+    if (!isExpanded) {
+      // Track course view when expanded for the first time
+      analyticsService.trackCourseView(course.id, course.title);
+    }
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleRegistrationClick = () => {
+    // Track registration funnel
+    analyticsService.trackRegistrationStep(course.id, 'registration_start');
+    setShowRegistration(true);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl">
@@ -37,7 +52,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
         <div className="flex space-x-3 mt-6">
           <button 
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={handleExpand}
             className={`bg-brand-blue hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition-colors ${course.registrationEnabled ? 'flex-1' : 'w-full'}`}
             aria-expanded={isExpanded}
             aria-controls={`course-details-${course.id}`}
@@ -46,7 +61,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           </button>
           {course.registrationEnabled && (
             <button 
-              onClick={() => setShowRegistration(true)}
+              onClick={handleRegistrationClick}
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
             >
               <span>📝</span>

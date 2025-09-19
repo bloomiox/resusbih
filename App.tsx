@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Page } from './types';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
+import { analyticsService } from './services/analyticsService';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './components/pages/HomePage';
@@ -16,6 +17,21 @@ import AdminPage from './components/pages/AdminPage';
 const AppContent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.Home);
   const { isAuthenticated } = useAuth();
+
+  // Track page views
+  useEffect(() => {
+    const pageMap: Record<Page, string> = {
+      [Page.Home]: '/',
+      [Page.About]: '/about',
+      [Page.Courses]: '/courses',
+      [Page.News]: '/news',
+      [Page.Contact]: '/contact',
+      [Page.Login]: '/login',
+      [Page.Admin]: '/admin',
+    };
+
+    analyticsService.trackPageView(pageMap[currentPage]);
+  }, [currentPage]);
 
   const renderPage = () => {
     switch (currentPage) {
