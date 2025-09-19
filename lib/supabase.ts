@@ -45,10 +45,7 @@ export interface Database {
           duration: string
           certification: string
           topics: string[]
-<<<<<<< HEAD
           registration_enabled: boolean
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
           created_at: string
           updated_at: string
         }
@@ -60,10 +57,7 @@ export interface Database {
           duration: string
           certification: string
           topics: string[]
-<<<<<<< HEAD
           registration_enabled?: boolean
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
         }
         Update: {
           title?: string
@@ -73,10 +67,7 @@ export interface Database {
           duration?: string
           certification?: string
           topics?: string[]
-<<<<<<< HEAD
           registration_enabled?: boolean
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
         }
       }
       team_members: {
