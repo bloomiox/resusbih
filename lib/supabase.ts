@@ -45,6 +45,7 @@ export interface Database {
           duration: string
           certification: string
           topics: string[]
+          registration_enabled: boolean
           created_at: string
           updated_at: string
         }
@@ -56,6 +57,7 @@ export interface Database {
           duration: string
           certification: string
           topics: string[]
+          registration_enabled?: boolean
         }
         Update: {
           title?: string
@@ -65,6 +67,7 @@ export interface Database {
           duration?: string
           certification?: string
           topics?: string[]
+          registration_enabled?: boolean
         }
       }
       team_members: {

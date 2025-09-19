@@ -99,6 +99,7 @@ export const coursesService = {
       description: item.description,
       audience: item.audience,
       imageUrl: item.image_url,
+      registrationEnabled: item.registration_enabled ?? true,
       details: {
         duration: item.duration,
         certification: item.certification,
@@ -118,6 +119,7 @@ export const coursesService = {
         duration: course.details.duration,
         certification: course.details.certification,
         topics: course.details.topics,
+        registration_enabled: course.registrationEnabled,
       })
       .select()
       .single();
@@ -130,6 +132,7 @@ export const coursesService = {
       description: data.description,
       audience: data.audience,
       imageUrl: data.image_url,
+      registrationEnabled: data.registration_enabled ?? true,
       details: {
         duration: data.duration,
         certification: data.certification,
@@ -144,6 +147,7 @@ export const coursesService = {
     if (updates.description) updateData.description = updates.description;
     if (updates.audience) updateData.audience = updates.audience;
     if (updates.imageUrl) updateData.image_url = updates.imageUrl;
+    if (updates.registrationEnabled !== undefined) updateData.registration_enabled = updates.registrationEnabled;
     if (updates.details?.duration) updateData.duration = updates.details.duration;
     if (updates.details?.certification) updateData.certification = updates.details.certification;
     if (updates.details?.topics) updateData.topics = updates.details.topics;
@@ -163,6 +167,7 @@ export const coursesService = {
       description: data.description,
       audience: data.audience,
       imageUrl: data.image_url,
+      registrationEnabled: data.registration_enabled ?? true,
       details: {
         duration: data.duration,
         certification: data.certification,
