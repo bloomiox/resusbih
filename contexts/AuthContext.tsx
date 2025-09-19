@@ -70,7 +70,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
+<<<<<<< HEAD
       // Always try Supabase auth first
+=======
+      // For now, keep the hardcoded credentials check
+      if (email === 'office@resusbih.org' && password === 'AmelWeb1.1') {
+        // Create a mock session for the hardcoded admin
+        setAuthState({
+          isAuthenticated: true,
+          user: { email },
+        });
+        return true;
+      }
+
+      // Try Supabase auth for other users
+>>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -78,6 +92,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (error) {
         console.error('Login failed:', error);
+<<<<<<< HEAD
         
         // Fallback to hardcoded credentials only if Supabase auth fails
         if (email === 'office@resusbih.org' && password === 'AmelWeb1.1') {
@@ -89,6 +104,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           return true;
         }
         
+=======
+>>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
         return false;
       }
 

@@ -23,7 +23,10 @@ CREATE TABLE IF NOT EXISTS courses (
     duration VARCHAR(100) NOT NULL,
     certification VARCHAR(255) NOT NULL,
     topics TEXT[] NOT NULL DEFAULT '{}',
+<<<<<<< HEAD
     registration_enabled BOOLEAN DEFAULT true,
+=======
+>>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -116,12 +119,21 @@ Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%.
 
 Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i započnite s masažom srca. Ne bojte se djelovati - vaša reakcija može spasiti život. Svaka sekunda je važna!', 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg');
 
+<<<<<<< HEAD
 INSERT INTO courses (title, description, audience, image_url, duration, certification, topics, registration_enabled) VALUES
 ('Osnovne vještine reanimacije', 'Naučite ključne vještine kardiopulmonalne reanimacije (KPR) i korištenja automatskog vanjskog defibrilatora (AVD).', 'Polaznici prve pomoći, studenti, nezdravstveni djelatnici', 'https://nursingexercise.com/wp-content/uploads/2023/04/Cardiopulmonary-resuscitation-cpr-procedure-in-hospital.jpg', '4 sata', 'Certifikat vrijedi 2 godine', ARRAY['Prepoznavanje srčanog zastoja', 'Kvalitetna masaža srca', 'Primjena umjetnog disanja', 'Sigurna uporaba AVD-a', 'Zbrinjavanje gušenja'], true),
 
 ('Napredni kurs oživljavanja', 'Kurs za zdravstvene djelatnike koji pokriva napredne tehnike oživljavanja, farmakoterapiju i vođenje tima.', 'Liječnici, medicinske sestre/tehničari', 'https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg', '2 dana', 'ERC ALS Provider certifikat', ARRAY['Napredno osiguravanje dišnog puta', 'Prepoznavanje i terapija poremećaja ritma', 'Primjena lijekova u oživljavanju', 'Vođenje reanimacijskog tima (CRM)', 'Post-reanimacijska skrb'], true),
 
 ('Oživljavanje djece (PLS)', 'Specijalizirani kurs usmjeren na specifičnosti kardiopulmonalne reanimacije kod novorođenčadi, dojenčadi i djece.', 'Pedijatri, osoblje hitne pomoći', 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg', '1 dan', 'Certifikat vrijedi 2 godine', ARRAY['Specifičnosti dječje anatomije i fiziologije', 'Oživljavanje novorođenčeta', 'Hitna stanja u pedijatriji', 'Timska dinamika'], false);
+=======
+INSERT INTO courses (title, description, audience, image_url, duration, certification, topics) VALUES
+('Osnovne vještine reanimacije', 'Naučite ključne vještine kardiopulmonalne reanimacije (KPR) i korištenja automatskog vanjskog defibrilatora (AVD).', 'Polaznici prve pomoći, studenti, nezdravstveni djelatnici', 'https://nursingexercise.com/wp-content/uploads/2023/04/Cardiopulmonary-resuscitation-cpr-procedure-in-hospital.jpg', '4 sata', 'Certifikat vrijedi 2 godine', ARRAY['Prepoznavanje srčanog zastoja', 'Kvalitetna masaža srca', 'Primjena umjetnog disanja', 'Sigurna uporaba AVD-a', 'Zbrinjavanje gušenja']),
+
+('Napredni kurs oživljavanja', 'Kurs za zdravstvene djelatnike koji pokriva napredne tehnike oživljavanja, farmakoterapiju i vođenje tima.', 'Liječnici, medicinske sestre/tehničari', 'https://www.aspenmedical.ae/wp-content/uploads/2024/02/BLS-Left.jpg', '2 dana', 'ERC ALS Provider certifikat', ARRAY['Napredno osiguravanje dišnog puta', 'Prepoznavanje i terapija poremećaja ritma', 'Primjena lijekova u oživljavanju', 'Vođenje reanimacijskog tima (CRM)', 'Post-reanimacijska skrb']),
+
+('Oživljavanje djece (PLS)', 'Specijalizirani kurs usmjeren na specifičnosti kardiopulmonalne reanimacije kod novorođenčadi, dojenčadi i djece.', 'Pedijatri, osoblje hitne pomoći', 'https://www.rrcpr.com/wp-content/uploads/2020/07/BLS_Course.jpg', '1 dan', 'Certifikat vrijedi 2 godine', ARRAY['Specifičnosti dječje anatomije i fiziologije', 'Oživljavanje novorođenčeta', 'Hitna stanja u pedijatriji', 'Timska dinamika']);
+>>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
 
 INSERT INTO team_members (name, role, spec, image_url) VALUES
 ('Spec. dr. med. Havić Hajrudin', 'Osnivač i predsjednik', 'Specijalista urgentne medicine', 'https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/Untitled%20design%20(10).png'),
