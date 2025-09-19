@@ -99,10 +99,7 @@ export const coursesService = {
       description: item.description,
       audience: item.audience,
       imageUrl: item.image_url,
-<<<<<<< HEAD
       registrationEnabled: item.registration_enabled ?? true,
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
       details: {
         duration: item.duration,
         certification: item.certification,
@@ -122,10 +119,7 @@ export const coursesService = {
         duration: course.details.duration,
         certification: course.details.certification,
         topics: course.details.topics,
-<<<<<<< HEAD
         registration_enabled: course.registrationEnabled,
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
       })
       .select()
       .single();
@@ -138,10 +132,7 @@ export const coursesService = {
       description: data.description,
       audience: data.audience,
       imageUrl: data.image_url,
-<<<<<<< HEAD
       registrationEnabled: data.registration_enabled ?? true,
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
       details: {
         duration: data.duration,
         certification: data.certification,
@@ -156,10 +147,7 @@ export const coursesService = {
     if (updates.description) updateData.description = updates.description;
     if (updates.audience) updateData.audience = updates.audience;
     if (updates.imageUrl) updateData.image_url = updates.imageUrl;
-<<<<<<< HEAD
     if (updates.registrationEnabled !== undefined) updateData.registration_enabled = updates.registrationEnabled;
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
     if (updates.details?.duration) updateData.duration = updates.details.duration;
     if (updates.details?.certification) updateData.certification = updates.details.certification;
     if (updates.details?.topics) updateData.topics = updates.details.topics;
@@ -179,10 +167,7 @@ export const coursesService = {
       description: data.description,
       audience: data.audience,
       imageUrl: data.image_url,
-<<<<<<< HEAD
       registrationEnabled: data.registration_enabled ?? true,
-=======
->>>>>>> 6f1514ed3e6f73033dbe61f353385bf9a45e1b0a
       details: {
         duration: data.duration,
         certification: data.certification,
