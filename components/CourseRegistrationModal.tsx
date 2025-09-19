@@ -13,7 +13,7 @@ const CourseRegistrationModal: React.FC<CourseRegistrationModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { addParticipant } = useData();
+  const { registerForCourse } = useData();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -46,14 +46,10 @@ const CourseRegistrationModal: React.FC<CourseRegistrationModalProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Add participant to the system
-      addParticipant({
+      // Register for course using API
+      await registerForCourse({
         ...formData,
         courseId: course.id,
-        courseName: course.title,
-        registrationDate: new Date().toISOString().split('T')[0],
-        certificateIssued: false,
-        status: 'registered',
       });
 
       setSubmitted(true);
@@ -75,6 +71,7 @@ const CourseRegistrationModal: React.FC<CourseRegistrationModalProps> = ({
       }, 3000);
     } catch (error) {
       console.error('Error submitting registration:', error);
+      alert('Greška prilikom registracije. Molimo pokušajte ponovo.');
     } finally {
       setIsSubmitting(false);
     }
