@@ -86,7 +86,7 @@ export const NEWS_DATA: NewsArticle[] = [
   {
     id: 1,
     title: 'Osnivanje Udruženja',
-    publishDate: '08.08.2025.',
+    publishDate: '08.08.2025',
     shortDescription: 'S ponosom objavljujemo osnivanje Udruženja Resuscitacijski savjet u Bosni i Hercegovini.',
     fullContent: `Službeno je osnovano Udruženje Resuscitacijski savjet u Bosni i Hercegovini (Удружење Ресусцитацијски савјет у Босни и Херцеговини) dana 08.08.2025. godine.
 
@@ -98,7 +98,7 @@ Cilj udruženja je promicanje i unaprjeđenje znanja i vještina oživljavanja �
    {
     id: 2,
     title: 'Objavljene nove ERC smjernice za reanimaciju 2025',
-    publishDate: '25.09.2025.',
+    publishDate: '25.09.2025',
     shortDescription: 'Europski Resuscitacijski Savjet (ERC) objavio je ažurirane smjernice. Naše udruženje započinje s implementacijom u sve kurseve.',
     fullContent: `Kao i svakih pet godina, Europski Resuscitacijski Savjet (ERC) objavio je nove, ažurirane smjernice za oživljavanje. Nove smjernice stavljaju još veći naglasak na kvalitetu masaže srca, timsku suradnju i post-reanimacijsku skrb.
 
@@ -108,7 +108,7 @@ Naše udruženje, kao punopravni član ERC-a, odmah započinje proces implementa
   {
     id: 3,
     title: 'Zašto je važna rana defibrilacija? Uloga AVD uređaja.',
-    publishDate: '18.09.2025.',
+    publishDate: '18.09.2025',
     shortDescription: 'Automatski vanjski defibrilator (AVD) je uređaj koji može spasiti život. Saznajte zašto je njegova rana primjena ključna.',
     fullContent: `Kod iznenadnog srčanog zastoja, srce često uđe u stanje ventrikularne fibrilacije - kaotičnog, neučinkovitog treperenja. Jedini način da se ovaj poremećaj ritma prekine je primjena električnog šoka, odnosno defibrilacije.
 
@@ -128,4 +128,4 @@ Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%.
 Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i započnite s masažom srca. Ne bojte se djelovati - vaša reakcija može spasiti život. Svaka sekunda je važna!`,
     imageUrl: 'https://www.escardio.org/static-assets/images/cpr-hands-only.jpg'
   }
-].sort((a, b) => new Date(b.publishDate.split('.').reverse().join('-')).getTime() - new Date(a.publishDate.split('.').reverse().join('-')).getTime());
+];
