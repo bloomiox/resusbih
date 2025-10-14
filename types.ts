@@ -4,6 +4,7 @@ export enum Page {
   Courses = 'Courses',
   News = 'News',
   Contact = 'Contact',
+  Admin = 'Admin',
 }
 
 export interface CourseDetails {
@@ -35,5 +36,5 @@ export interface NewsArticle {
   publishDate: string;
   shortDescription: string;
   fullContent: string;
-  imageUrl?: string;
+  imageUrls: string[];
 }

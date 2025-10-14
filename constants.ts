@@ -93,7 +93,7 @@ export const NEWS_DATA: NewsArticle[] = [
 Adresa sjedišta je: Bihać, ulica Jablanska broj 155.
 
 Cilj udruženja je promicanje i unaprjeđenje znanja i vještina oživljavanja širom zemlje, u skladu s najnovijim europskim i svjetskim smjernicama. Radujemo se budućim projektima i suradnji sa svim zainteresiranim stranama u svrhu spašavanja života.`,
-    imageUrl: 'https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/RESUS%20LOGO%20(3).png'
+    imageUrls: ['https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/RESUS%20LOGO%20(3).png']
   },
    {
     id: 2,
@@ -103,7 +103,7 @@ Cilj udruženja je promicanje i unaprjeđenje znanja i vještina oživljavanja �
     fullContent: `Kao i svakih pet godina, Europski Resuscitacijski Savjet (ERC) objavio je nove, ažurirane smjernice za oživljavanje. Nove smjernice stavljaju još veći naglasak na kvalitetu masaže srca, timsku suradnju i post-reanimacijsku skrb.
 
 Naše udruženje, kao punopravni član ERC-a, odmah započinje proces implementacije novih smjernica u sve naše certificirane kurseve. Svi naši instruktori proći će dodatnu obuku kako bi osigurali da polaznici dobiju najsuvremenija znanja i vještine.`,
-    imageUrl: 'https://www.cprguidelines.eu/assets/images/ERC_guidelines_2021_main_visual_twitter-84271032.jpg'
+    imageUrls: ['https://www.cprguidelines.eu/assets/images/ERC_guidelines_2021_main_visual_twitter-84271032.jpg']
   },
   {
     id: 3,
@@ -113,7 +113,7 @@ Naše udruženje, kao punopravni član ERC-a, odmah započinje proces implementa
     fullContent: `Kod iznenadnog srčanog zastoja, srce često uđe u stanje ventrikularne fibrilacije - kaotičnog, neučinkovitog treperenja. Jedini način da se ovaj poremećaj ritma prekine je primjena električnog šoka, odnosno defibrilacije.
 
 Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%. Zbog toga je postavljanje AVD uređaja na javna mjesta (trgovački centri, zračne luke, sportski objekti) i edukacija laika o njihovoj uporabi od presudne važnosti. AVD uređaji su dizajnirani da budu jednostavni za korištenje i sigurni, te glasovnim uputama vode korisnika kroz cijeli postupak.`,
-    imageUrl: 'https://www.aedsuperstore.com/assets/images/blog/2020/09/aed-shock-button.jpg'
+    imageUrls: ['https://www.aedsuperstore.com/assets/images/blog/2020/09/aed-shock-button.jpg']
   },
   {
     id: 4,
@@ -126,6 +126,6 @@ Svaka minuta odgode defibrilacije smanjuje šansu za preživljavanje za oko 10%.
 2.  **Osoba ne diše normalno:** Može prestati disati ili imati agonalne udahe (nepravilno, bučno disanje slično hrkanju ili krkljanju).
 
 Ako primijetite ove znakove, odmah pozovite hitnu medicinsku pomoć (124) i započnite s masažom srca. Ne bojte se djelovati - vaša reakcija može spasiti život. Svaka sekunda je važna!`,
-    imageUrl: 'https://www.escardio.org/static-assets/images/cpr-hands-only.jpg'
+    imageUrls: ['https://www.escardio.org/static-assets/images/cpr-hands-only.jpg']
   }
 ];
