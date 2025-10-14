@@ -6,6 +6,8 @@ import { DataProvider } from './contexts/DataContext';
 import { analyticsService } from './services/analyticsService';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import './utils/authDebug'; // Import debug utility
+import './utils/cloudinaryTest'; // Import Cloudinary test utility
 import HomePage from './components/pages/HomePage';
 import AboutPage from './components/pages/AboutPage';
 import CoursesPage from './components/pages/CoursesPage';

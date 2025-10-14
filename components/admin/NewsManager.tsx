@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NewsArticle } from '../../types';
 import { useData } from '../../contexts/DataContext';
+import ImageUpload from './ImageUpload';
 
 const NewsManager: React.FC = () => {
   const { news: articles, addNews, updateNews, deleteNews } = useData();
@@ -12,6 +13,7 @@ const NewsManager: React.FC = () => {
     shortDescription: '',
     fullContent: '',
     imageUrl: '',
+    galleryImages: [] as string[],
   });
 
   const handleEdit = (article: NewsArticle) => {
@@ -22,6 +24,7 @@ const NewsManager: React.FC = () => {
       shortDescription: article.shortDescription,
       fullContent: article.fullContent,
       imageUrl: article.imageUrl || '',
+      galleryImages: article.galleryImages || [],
     });
     setIsCreating(false);
   };
@@ -34,6 +37,7 @@ const NewsManager: React.FC = () => {
       shortDescription: '',
       fullContent: '',
       imageUrl: '',
+      galleryImages: [],
     });
     setIsCreating(true);
   };
@@ -59,6 +63,28 @@ const NewsManager: React.FC = () => {
   const handleCancel = () => {
     setEditingArticle(null);
     setIsCreating(false);
+  };
+
+  const handleMainImageUpload = (imageUrl: string, publicId: string) => {
+    setFormData({ ...formData, imageUrl });
+  };
+
+  const handleMainImageRemove = (publicId: string) => {
+    setFormData({ ...formData, imageUrl: '' });
+  };
+
+  const handleGalleryImageUpload = (imageUrl: string, publicId: string) => {
+    setFormData({ 
+      ...formData, 
+      galleryImages: [...formData.galleryImages, imageUrl] 
+    });
+  };
+
+  const handleGalleryImageRemove = (imageUrl: string) => {
+    setFormData({
+      ...formData,
+      galleryImages: formData.galleryImages.filter(img => img !== imageUrl)
+    });
   };
 
   return (
@@ -121,13 +147,44 @@ const NewsManager: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">URL slike (opcionalno)</label>
-              <input
-                type="url"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+              <ImageUpload
+                label="Glavna slika"
+                currentImage={formData.imageUrl}
+                onUpload={handleMainImageUpload}
+                onRemove={handleMainImageRemove}
+                folder="news/main"
               />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">Galerija slika</label>
+              <div className="space-y-4">
+                {formData.galleryImages.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {formData.galleryImages.map((imageUrl, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={imageUrl}
+                          alt={`Gallery ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border border-gray-300"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleGalleryImageRemove(imageUrl)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <ImageUpload
+                  label="Dodaj sliku u galeriju"
+                  onUpload={handleGalleryImageUpload}
+                  folder="news/gallery"
+                />
+              </div>
             </div>
             <div className="flex space-x-3 mt-6">
               <button

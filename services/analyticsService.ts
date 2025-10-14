@@ -5,7 +5,6 @@ export interface AnalyticsEvent {
   page_path?: string;
   referrer?: string;
   session_id: string;
-  metadata?: Record<string, any>;
 }
 
 export interface AnalyticsMetrics {
@@ -76,7 +75,6 @@ class AnalyticsService {
     await this.trackEvent({
       event_type: 'course_view',
       page_path: `/courses/${courseId}`,
-      metadata: { course_id: courseId, course_title: courseTitle },
     });
   }
 
@@ -85,15 +83,13 @@ class AnalyticsService {
     await this.trackEvent({
       event_type: 'news_view',
       page_path: `/news/${newsId}`,
-      metadata: { news_id: newsId, news_title: newsTitle },
     });
   }
 
   // Track registration funnel
   async trackRegistrationStep(
     courseId: number,
-    step: 'course_view' | 'registration_start' | 'form_submit' | 'registration_complete',
-    metadata?: Record<string, any>
+    step: 'course_view' | 'registration_start' | 'form_submit' | 'registration_complete'
   ): Promise<void> {
     try {
       const { error } = await supabase
@@ -102,7 +98,6 @@ class AnalyticsService {
           session_id: this.getSessionId(),
           course_id: courseId,
           step,
-          metadata,
         });
 
       if (error) {
@@ -157,17 +152,17 @@ class AnalyticsService {
           .eq('event_type', 'page_view')
           .gte('created_at', startDate.toISOString()),
 
-        // Top courses (by views)
+        // Top courses (by views) - using page_path instead of metadata
         supabase
           .from('analytics_events')
-          .select('metadata')
+          .select('page_path')
           .eq('event_type', 'course_view')
           .gte('created_at', startDate.toISOString()),
 
-        // Top news (by views)
+        // Top news (by views) - using page_path instead of metadata
         supabase
           .from('analytics_events')
-          .select('metadata')
+          .select('page_path')
           .eq('event_type', 'news_view')
           .gte('created_at', startDate.toISOString()),
 
@@ -205,12 +200,15 @@ class AnalyticsService {
           percentage: pageViews > 0 ? (views / pageViews) * 100 : 0,
         }));
 
-      // Calculate top courses
+      // Calculate top courses - extract course ID from page_path
       const courseViewCounts: Record<number, number> = {};
       topCoursesResult.data?.forEach(event => {
-        const courseId = event.metadata?.course_id;
-        if (courseId) {
-          courseViewCounts[courseId] = (courseViewCounts[courseId] || 0) + 1;
+        if (event.page_path) {
+          const match = event.page_path.match(/\/courses\/(\d+)/);
+          if (match) {
+            const courseId = parseInt(match[1]);
+            courseViewCounts[courseId] = (courseViewCounts[courseId] || 0) + 1;
+          }
         }
       });
 
@@ -234,12 +232,15 @@ class AnalyticsService {
           };
         });
 
-      // Calculate top news
+      // Calculate top news - extract news ID from page_path
       const newsViewCounts: Record<number, number> = {};
       topNewsResult.data?.forEach(event => {
-        const newsId = event.metadata?.news_id;
-        if (newsId) {
-          newsViewCounts[newsId] = (newsViewCounts[newsId] || 0) + 1;
+        if (event.page_path) {
+          const match = event.page_path.match(/\/news\/(\d+)/);
+          if (match) {
+            const newsId = parseInt(match[1]);
+            newsViewCounts[newsId] = (newsViewCounts[newsId] || 0) + 1;
+          }
         }
       });
 

@@ -39,6 +39,7 @@ export interface NewsArticle {
   shortDescription: string;
   fullContent: string;
   imageUrl?: string;
+  galleryImages?: string[];
 }
 
 export interface AuthState {

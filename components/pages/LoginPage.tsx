@@ -10,16 +10,25 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     
-    if (login(email, password)) {
-      setCurrentPage(Page.Admin);
-    } else {
-      setError('Neispravni podaci za prijavu');
+    try {
+      const success = await login(email, password);
+      if (success) {
+        setCurrentPage(Page.Admin);
+      } else {
+        setError('Neispravni podaci za prijavu');
+      }
+    } catch (error) {
+      setError('Greška pri prijavi. Molimo pokušajte ponovo.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,9 +92,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-brand-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue transition-colors duration-200"
+              disabled={loading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-brand-blue hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue transition-colors duration-200"
             >
-              Prijavite se
+              {loading ? 'Prijavljivanje...' : 'Prijavite se'}
             </button>
           </div>
         </form>

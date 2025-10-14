@@ -1,7 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://hywmnhwrzebubmnimdow.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5d21uaHdyemVidWJtbmltZG93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNTYyNzksImV4cCI6MjA3MzgzMjI3OX0.M9WQvNBzzMcaeWt0Ozr8iM66NCGgLhJAQX5r3hkv83c'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables. Please check your .env file.')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -17,6 +21,7 @@ export interface Database {
           short_description: string
           full_content: string
           image_url: string | null
+          gallery_images: string[] | null
           created_at: string
           updated_at: string
         }
@@ -26,6 +31,7 @@ export interface Database {
           short_description: string
           full_content: string
           image_url?: string | null
+          gallery_images?: string[] | null
         }
         Update: {
           title?: string
@@ -33,6 +39,7 @@ export interface Database {
           short_description?: string
           full_content?: string
           image_url?: string | null
+          gallery_images?: string[] | null
         }
       }
       courses: {

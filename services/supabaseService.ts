@@ -18,6 +18,7 @@ export const newsService = {
       shortDescription: item.short_description,
       fullContent: item.full_content,
       imageUrl: item.image_url,
+      galleryImages: item.gallery_images || [],
     }));
   },
 
@@ -30,6 +31,7 @@ export const newsService = {
         short_description: article.shortDescription,
         full_content: article.fullContent,
         image_url: article.imageUrl,
+        gallery_images: article.galleryImages || [],
       })
       .select()
       .single();
@@ -43,6 +45,7 @@ export const newsService = {
       shortDescription: data.short_description,
       fullContent: data.full_content,
       imageUrl: data.image_url,
+      galleryImages: data.gallery_images || [],
     };
   },
 
@@ -53,6 +56,7 @@ export const newsService = {
     if (updates.shortDescription) updateData.short_description = updates.shortDescription;
     if (updates.fullContent) updateData.full_content = updates.fullContent;
     if (updates.imageUrl !== undefined) updateData.image_url = updates.imageUrl;
+    if (updates.galleryImages !== undefined) updateData.gallery_images = updates.galleryImages;
 
     const { data, error } = await supabase
       .from('news_articles')
@@ -70,6 +74,7 @@ export const newsService = {
       shortDescription: data.short_description,
       fullContent: data.full_content,
       imageUrl: data.image_url,
+      galleryImages: data.gallery_images || [],
     };
   },
 
