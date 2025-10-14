@@ -9,6 +9,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
+  const navLinks = [...NAV_LINKS, { name: 'Admin', page: Page.Admin }];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNavClick = (page: Page) => {
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            {NAV_LINKS.map(link => (
+              {navLinks.map((link) => (
               <button
                 key={link.page}
                 onClick={() => handleNavClick(link.page)}
@@ -67,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
       {isMenuOpen && (
         <div className="md:hidden bg-brand-white border-t border-gray-200">
           <nav className="flex flex-col items-center space-y-4 py-4">
-            {NAV_LINKS.map(link => (
+            {navLinks.map(link => (
               <button
                 key={link.page}
                 onClick={() => handleNavClick(link.page)}

@@ -8,9 +8,18 @@ import AboutPage from './components/pages/AboutPage';
 import CoursesPage from './components/pages/CoursesPage';
 import ContactPage from './components/pages/ContactPage';
 import NewsPage from './components/pages/NewsPage';
+import AdminPage from './components/pages/AdminPage';
+import { NewsArticle } from './types';
+import { NEWS_DATA } from './constants';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.Home);
+  const [news, setNews] = useState<NewsArticle[]>(NEWS_DATA);
+
+  const handleAddArticle = (article: NewsArticle) => {
+    setNews([article, ...news]);
+    setCurrentPage(Page.News);
+  };
 
   const renderPage = () => {
     switch (currentPage) {
@@ -21,9 +30,11 @@ const App: React.FC = () => {
       case Page.Courses:
         return <CoursesPage />;
       case Page.News:
-        return <NewsPage />;
+        return <NewsPage news={news} />;
       case Page.Contact:
         return <ContactPage />;
+      case Page.Admin:
+        return <AdminPage onAddArticle={handleAddArticle} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { NEWS_DATA } from '../../constants';
+import React, { useState, useEffect } from 'react';
 import { NewsArticle } from '../../types';
 import PageHeader from '../PageHeader';
 
@@ -12,9 +11,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles, onSelectArticle }) 
   <div className="space-y-8 max-w-4xl mx-auto">
     {articles.map(article => (
       <article key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col md:flex-row">
-        {article.imageUrl && (
+        {article.imageUrls && article.imageUrls.length > 0 && (
           <div className="md:w-1/3">
-            <img src={article.imageUrl} alt={article.title} className="h-full w-full object-cover"/>
+            <img src={article.imageUrls[0]} alt={article.title} className="h-full w-full object-cover"/>
           </div>
         )}
         <div className="p-8 flex flex-col justify-between md:w-2/3">
@@ -47,8 +46,12 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, onClose }) => (
   <div className="bg-white p-8 md:p-12 rounded-lg shadow-lg max-w-4xl mx-auto animate-fade-in">
     <h2 className="text-3xl font-bold text-brand-blue mb-2">{article.title}</h2>
     <p className="text-sm text-gray-500 mb-6">Objavljeno: {article.publishDate}</p>
-    {article.imageUrl && (
-      <img src={article.imageUrl} alt={article.title} className="w-full h-auto max-h-96 object-cover rounded-lg mb-8 shadow-md" />
+    {article.imageUrls && article.imageUrls.length > 0 && (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+        {article.imageUrls.map((url, index) => (
+          <img key={index} src={url} alt={`${article.title} - slika ${index + 1}`} className="w-full h-auto object-cover rounded-lg shadow-md" />
+        ))}
+      </div>
     )}
     <div className="text-gray-700 space-y-4 leading-relaxed">
       {article.fullContent.split('\n\n').map((paragraph, index) => (
@@ -75,7 +78,7 @@ const parseDate = (dateString: string): Date => {
   return new Date(year, month - 1, day);
 };
 
-const NewsPage: React.FC = () => {
+const NewsPage: React.FC<{ news: NewsArticle[] }> = ({ news }) => {
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
 
@@ -88,7 +91,7 @@ const NewsPage: React.FC = () => {
     setSelectedArticleId(null);
   };
 
-  const sortedArticles = [...NEWS_DATA].sort((a, b) => {
+  const sortedArticles = [...news].sort((a, b) => {
     const dateA = parseDate(a.publishDate);
     const dateB = parseDate(b.publishDate);
     if (sortOrder === 'newest') {
@@ -99,7 +102,7 @@ const NewsPage: React.FC = () => {
   });
 
   const selectedArticle = selectedArticleId
-    ? NEWS_DATA.find((article) => article.id === selectedArticleId)
+    ? news.find((article) => article.id === selectedArticleId)
     : null;
 
   return (
