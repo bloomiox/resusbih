@@ -20,13 +20,9 @@ export const validateEnvironment = () => {
 };
 
 export const getCloudinaryConfig = () => {
-  if (!validateEnvironment()) {
-    throw new Error('Cloudinary configuration is incomplete. Check your .env file.');
-  }
-
   return {
-    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-    apiKey: import.meta.env.VITE_CLOUDINARY_API_KEY,
-    uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dev6d0spf',
+    apiKey: import.meta.env.VITE_CLOUDINARY_API_KEY || '642342664643333',
+    uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'resusbih_news',
   };
 };
