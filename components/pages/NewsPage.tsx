@@ -68,8 +68,16 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, onClose }) => (
 );
 
 
+type SortOrder = 'newest' | 'oldest';
+
+const parseDate = (dateString: string): Date => {
+  const [day, month, year] = dateString.split('.').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 const NewsPage: React.FC = () => {
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
 
   const handleSelectArticle = (id: number) => {
     setSelectedArticleId(id);
@@ -80,11 +88,23 @@ const NewsPage: React.FC = () => {
     setSelectedArticleId(null);
   };
 
-  const selectedArticle = selectedArticleId ? NEWS_DATA.find(article => article.id === selectedArticleId) : null;
+  const sortedArticles = [...NEWS_DATA].sort((a, b) => {
+    const dateA = parseDate(a.publishDate);
+    const dateB = parseDate(b.publishDate);
+    if (sortOrder === 'newest') {
+      return dateB.getTime() - dateA.getTime();
+    } else {
+      return dateA.getTime() - dateB.getTime();
+    }
+  });
+
+  const selectedArticle = selectedArticleId
+    ? NEWS_DATA.find((article) => article.id === selectedArticleId)
+    : null;
 
   return (
     <div className="animate-fade-in">
-      <PageHeader 
+      <PageHeader
         title="Novosti"
         subtitle="Pratite najnovije vijesti i obavijesti iz našeg udruženja."
       />
@@ -92,9 +112,42 @@ const NewsPage: React.FC = () => {
       <div className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {selectedArticle ? (
-            <ArticleDetail article={selectedArticle} onClose={handleCloseArticle} />
+            <ArticleDetail
+              article={selectedArticle}
+              onClose={handleCloseArticle}
+            />
           ) : (
-            <ArticleList articles={NEWS_DATA} onSelectArticle={handleSelectArticle} />
+            <>
+              <div className="flex justify-end mb-8">
+                <div className="flex items-center space-x-4">
+                  <span className="font-semibold">Sortiraj po:</span>
+                  <button
+                    onClick={() => setSortOrder('newest')}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      sortOrder === 'newest'
+                        ? 'bg-brand-blue text-white'
+                        : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                  >
+                    Najnovije
+                  </button>
+                  <button
+                    onClick={() => setSortOrder('oldest')}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      sortOrder === 'oldest'
+                        ? 'bg-brand-blue text-white'
+                        : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                  >
+                    Najstarije
+                  </button>
+                </div>
+              </div>
+              <ArticleList
+                articles={sortedArticles}
+                onSelectArticle={handleSelectArticle}
+              />
+            </>
           )}
         </div>
       </div>
