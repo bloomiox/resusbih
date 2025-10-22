@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { NewsArticle } from '../../types';
 import PageHeader from '../PageHeader';
 import ImageGalleryModal from '../ImageGalleryModal';
 import ShareButton from '../ShareButton';
+import { metaTagsManager } from '../../utils/metaTags';
 
 interface ArticleListProps {
   articles: NewsArticle[];
@@ -222,6 +223,27 @@ const NewsPage: React.FC = () => {
   };
 
   const selectedArticle = selectedArticleId ? news.find(article => article.id === selectedArticleId) : null;
+
+  // Update meta tags when article is selected/deselected
+  useEffect(() => {
+    if (selectedArticle) {
+      metaTagsManager.updateForArticle(selectedArticle);
+    } else {
+      // Reset to news page meta tags
+      metaTagsManager.updateMetaTags({
+        title: 'Novosti | RESUSBIH',
+        description: 'Pratite najnovije vijesti i obavijesti iz našeg udruženja.',
+        url: `${window.location.origin}/news`
+      });
+    }
+
+    // Cleanup: reset meta tags when component unmounts
+    return () => {
+      if (!selectedArticle) {
+        metaTagsManager.resetToDefault();
+      }
+    };
+  }, [selectedArticle]);
 
   return (
     <div className="animate-fade-in">

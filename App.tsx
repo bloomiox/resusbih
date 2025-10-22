@@ -8,6 +8,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import './utils/authDebug'; // Import debug utility
 import './utils/cloudinaryTest'; // Import Cloudinary test utility
+import './utils/metaTagsTest'; // Import meta tags test utility
+import { initializeDefaultMetaTags } from './utils/metaTags';
 import HomePage from './components/pages/HomePage';
 import AboutPage from './components/pages/AboutPage';
 import CoursesPage from './components/pages/CoursesPage';
@@ -108,6 +110,11 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  // Initialize default meta tags
+  React.useEffect(() => {
+    initializeDefaultMetaTags();
+  }, []);
+
   return (
     <AuthProvider>
       <DataProvider>
