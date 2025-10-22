@@ -167,8 +167,17 @@ const NewsPage: React.FC = () => {
     const articleId = urlParams.get('article');
     if (articleId) {
       const id = parseInt(articleId);
-      if (!isNaN(id) && news.some(article => article.id === id)) {
-        setSelectedArticleId(id);
+      if (!isNaN(id)) {
+        // Wait for news data to load before checking if article exists
+        if (news.length > 0) {
+          const articleExists = news.some(article => article.id === id);
+          if (articleExists) {
+            setSelectedArticleId(id);
+          }
+        } else {
+          // If news hasn't loaded yet, set the ID anyway and let it validate later
+          setSelectedArticleId(id);
+        }
       }
     }
   }, [news]);
@@ -198,8 +207,8 @@ const NewsPage: React.FC = () => {
 
   const handleSelectArticle = (id: number) => {
     setSelectedArticleId(id);
-    // Update URL without page reload
-    const url = new URL(window.location.href);
+    // Update URL without page reload - ensure we're on the news path
+    const url = new URL(window.location.origin + '/news');
     url.searchParams.set('article', id.toString());
     window.history.pushState({}, '', url.toString());
     window.scrollTo({ top: 200, behavior: 'smooth' });
@@ -207,9 +216,8 @@ const NewsPage: React.FC = () => {
 
   const handleCloseArticle = () => {
     setSelectedArticleId(null);
-    // Remove article parameter from URL
-    const url = new URL(window.location.href);
-    url.searchParams.delete('article');
+    // Remove article parameter from URL and ensure we're on the news path
+    const url = new URL(window.location.origin + '/news');
     window.history.pushState({}, '', url.toString());
   };
 

@@ -20,6 +20,36 @@ const AppContent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.Home);
   const { isAuthenticated } = useAuth();
 
+  // Initialize page based on URL
+  useEffect(() => {
+    const path = window.location.pathname;
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Map URL paths to pages
+    const pathToPage: Record<string, Page> = {
+      '/': Page.Home,
+      '/about': Page.About,
+      '/courses': Page.Courses,
+      '/news': Page.News,
+      '/contact': Page.Contact,
+      '/login': Page.Login,
+      '/admin': Page.Admin,
+    };
+
+    // Set page based on URL path
+    const pageFromPath = pathToPage[path];
+    if (pageFromPath) {
+      setCurrentPage(pageFromPath);
+    } else if (path === '/' && urlParams.has('article')) {
+      // Handle root URL with article parameter - redirect to news page
+      setCurrentPage(Page.News);
+      // Update URL to proper news path
+      const articleId = urlParams.get('article');
+      const newUrl = `/news?article=${articleId}`;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
+
   // Track page views
   useEffect(() => {
     const pageMap: Record<Page, string> = {
