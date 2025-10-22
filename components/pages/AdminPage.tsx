@@ -66,9 +66,9 @@ const AdminPage: React.FC<AdminPageProps> = ({ setCurrentPage }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
-              <img 
-                src="https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/RESUSBIH%20LOGO.png" 
-                alt="RESUSBIH Logo" 
+              <img
+                src="https://pub-7d86d5f2e97b46c0a2c2ed8485d9788b.r2.dev/RESUSBIH%20LOGO.png"
+                alt="RESUSBIH Logo"
                 className="h-10 w-auto"
               />
               <div>
@@ -104,11 +104,10 @@ const AdminPage: React.FC<AdminPageProps> = ({ setCurrentPage }) => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`${
-                  activeTab === tab.id
-                    ? 'bg-brand-blue text-white border-brand-blue'
-                    : 'text-gray-600 hover:text-brand-blue hover:bg-blue-50'
-                } whitespace-nowrap py-4 px-6 font-semibold text-sm flex items-center space-x-2 border-b-2 border-transparent transition-all duration-200 first:rounded-tl-lg last:rounded-tr-lg`}
+                className={`${activeTab === tab.id
+                  ? 'bg-brand-blue text-white border-brand-blue'
+                  : 'text-gray-600 hover:text-brand-blue hover:bg-blue-50'
+                  } whitespace-nowrap py-4 px-6 font-semibold text-sm flex items-center space-x-2 border-b-2 border-transparent transition-all duration-200 first:rounded-tl-lg last:rounded-tr-lg`}
               >
                 <span className={`text-lg ${activeTab === tab.id ? 'text-white' : tab.color}`}>{tab.icon}</span>
                 <span>{tab.label}</span>

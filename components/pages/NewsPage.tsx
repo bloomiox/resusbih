@@ -3,6 +3,7 @@ import { useData } from '../../contexts/DataContext';
 import { NewsArticle } from '../../types';
 import PageHeader from '../PageHeader';
 import ImageGalleryModal from '../ImageGalleryModal';
+import ShareButton from '../ShareButton';
 
 interface ArticleListProps {
   articles: NewsArticle[];
@@ -120,15 +121,25 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ article, onClose }) => {
           </div>
         )}
         
-        <button
-          onClick={onClose}
-          className="mt-8 bg-brand-lightblue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-          Natrag na novosti
-        </button>
+        {/* Action Buttons */}
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-center">
+          <button
+            onClick={onClose}
+            className="bg-brand-lightblue hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center justify-center sm:justify-start"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+            Natrag na novosti
+          </button>
+          
+          <ShareButton
+            title={article.title}
+            description={article.shortDescription}
+            articleId={article.id}
+            className="sm:ml-auto"
+          />
+        </div>
       </div>
 
       {/* Image Gallery Modal */}
@@ -149,6 +160,18 @@ const NewsPage: React.FC = () => {
   const { news } = useData();
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+
+  // Check URL for article ID on component mount
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get('article');
+    if (articleId) {
+      const id = parseInt(articleId);
+      if (!isNaN(id) && news.some(article => article.id === id)) {
+        setSelectedArticleId(id);
+      }
+    }
+  }, [news]);
 
   const sortedNews = useMemo(() => {
     const newsCopy = [...news];
@@ -175,11 +198,19 @@ const NewsPage: React.FC = () => {
 
   const handleSelectArticle = (id: number) => {
     setSelectedArticleId(id);
+    // Update URL without page reload
+    const url = new URL(window.location.href);
+    url.searchParams.set('article', id.toString());
+    window.history.pushState({}, '', url.toString());
     window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   const handleCloseArticle = () => {
     setSelectedArticleId(null);
+    // Remove article parameter from URL
+    const url = new URL(window.location.href);
+    url.searchParams.delete('article');
+    window.history.pushState({}, '', url.toString());
   };
 
   const selectedArticle = selectedArticleId ? news.find(article => article.id === selectedArticleId) : null;
