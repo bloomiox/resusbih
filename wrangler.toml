@@ -1,0 +1,14 @@
+# Cloudflare Worker configuration for RESUSBIH dynamic meta tags
+
+name = "resusbih-meta-tags"
+main = "worker/index.js"
+compatibility_date = "2024-10-01"
+
+# Development configuration
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Environment variables will be set via Cloudflare dashboard
+# VITE_SUPABASE_URL = "https://hywmnhwrzebubmnimdow.supabase.co"
+# VITE_SUPABASE_ANON_KEY = "your_key_here"

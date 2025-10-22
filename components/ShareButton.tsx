@@ -17,29 +17,27 @@ const ShareButton: React.FC<ShareButtonProps> = ({
     const [showShareMenu, setShowShareMenu] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
 
-    // Generate URLs - different for social media vs direct sharing
-    const directUrl = `${window.location.origin}/news?article=${articleId}`;
-    const socialMediaUrl = `${window.location.origin}/article-${articleId}.html`;
+    // Generate URLs - use dynamic URLs for everything (Cloudflare Worker handles meta tags)
+    const articleUrl = `${window.location.origin}/news?article=${articleId}`;
 
     // Encode text for sharing
     const encodedTitle = encodeURIComponent(title);
     const encodedDescription = encodeURIComponent(description);
-    const encodedSocialUrl = encodeURIComponent(socialMediaUrl);
-    const encodedDirectUrl = encodeURIComponent(directUrl);
+    const encodedUrl = encodeURIComponent(articleUrl);
 
-    // Share URLs for different platforms - use social media URL for better previews
+    // Share URLs for different platforms - use dynamic URL (Worker provides perfect meta tags)
     const shareUrls = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedSocialUrl}`,
-        twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedSocialUrl}`,
-        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedSocialUrl}`,
-        whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedDirectUrl}`, // Use direct URL for WhatsApp
-        email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${directUrl}`, // Use direct URL for email
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+        twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+        whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
+        email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${articleUrl}`,
     };
 
     const handleCopyLink = async () => {
         try {
-            // Use social media URL for copy link (better social media previews)
-            await navigator.clipboard.writeText(socialMediaUrl);
+            // Use dynamic URL (Worker provides perfect social media previews)
+            await navigator.clipboard.writeText(articleUrl);
             setCopySuccess(true);
             setTimeout(() => setCopySuccess(false), 2000);
 
@@ -51,7 +49,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
         } catch (err) {
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
-            textArea.value = socialMediaUrl;
+            textArea.value = articleUrl;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
@@ -84,7 +82,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
                 await navigator.share({
                     title: title,
                     text: description,
-                    url: directUrl, // Use direct URL for native sharing
+                    url: articleUrl, // Use dynamic URL for native sharing
                 });
                 setShowShareMenu(false);
             } catch (err) {
