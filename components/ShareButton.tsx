@@ -38,8 +38,8 @@ const ShareButton: React.FC<ShareButtonProps> = ({
 
     const handleCopyLink = async () => {
         try {
-            // Use direct URL for copy link (better user experience)
-            await navigator.clipboard.writeText(directUrl);
+            // Use social media URL for copy link (better social media previews)
+            await navigator.clipboard.writeText(socialMediaUrl);
             setCopySuccess(true);
             setTimeout(() => setCopySuccess(false), 2000);
 
@@ -51,7 +51,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
         } catch (err) {
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
-            textArea.value = directUrl;
+            textArea.value = socialMediaUrl;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
