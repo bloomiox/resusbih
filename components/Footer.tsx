@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             <h3 className="text-xl font-bold mb-2">Pratite nas</h3>
             <div className="flex justify-center md:justify-start space-x-4">
               <a 
-                href="https://www.facebook.com/resuscitacijski.savjet.bih" 
+                href="https://www.facebook.com/profile.php?id=61582409113860" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-300 hover:text-brand-red transition-colors flex items-center space-x-1"
