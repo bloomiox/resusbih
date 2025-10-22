@@ -15,4 +15,4 @@ This directory contains automatically generated static HTML files for social med
 - Social media sharing: Use `/article-X.html` URLs
 - Direct access: Users get redirected to `/news?article=X`
 
-Generated on: 2025-10-22T19:40:07.932Z
+Generated on: 2025-10-22T19:55:00.099Z

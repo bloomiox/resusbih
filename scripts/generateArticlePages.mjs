@@ -20,7 +20,21 @@ const siteUrl = 'https://resusbih.org';
 // HTML template for article pages
 const generateArticleHTML = (article) => {
   const title = article.title.replace(/"/g, '&quot;');
-  const description = article.short_description.replace(/"/g, '&quot;');
+  
+  // Use short_description, or fallback to truncated full_content, or default
+  let description = article.short_description || '';
+  if (!description && article.full_content) {
+    // Use first 150 characters of full content as fallback
+    description = article.full_content.substring(0, 150).replace(/\n/g, ' ').trim();
+    if (description.length === 150) {
+      description += '...';
+    }
+  }
+  if (!description) {
+    description = 'Pročitajte najnovije vijesti iz Udruženja Resuscitacijski savjet u Bosni i Hercegovini.';
+  }
+  description = description.replace(/"/g, '&quot;');
+  
   const image = article.image_url || defaultImage;
   const url = `${siteUrl}/news?article=${article.id}`;
   
@@ -145,7 +159,7 @@ async function generateArticlePages() {
     // Fetch all articles from Supabase
     const { data: articles, error } = await supabase
       .from('news_articles')
-      .select('id, title, short_description, image_url, created_at')
+      .select('id, title, short_description, full_content, image_url, created_at')
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -173,6 +187,14 @@ async function generateArticlePages() {
       try {
         const filename = `article-${article.id}.html`;
         const filepath = path.join(publicDir, filename);
+        
+        // Debug: Check article data
+        const hasDescription = article.short_description && article.short_description.trim();
+        const hasContent = article.full_content && article.full_content.trim();
+        const hasImage = article.image_url && article.image_url.trim();
+        
+        console.log(`📝 Article ${article.id}: desc=${hasDescription ? '✅' : '❌'}, content=${hasContent ? '✅' : '❌'}, image=${hasImage ? '✅' : '❌'}`);
+        
         const html = generateArticleHTML(article);
         
         fs.writeFileSync(filepath, html, 'utf8');

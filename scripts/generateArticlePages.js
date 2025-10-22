@@ -20,7 +20,21 @@ const siteUrl = 'https://resusbih.org';
 // HTML template for article pages
 const generateArticleHTML = (article) => {
   const title = article.title.replace(/"/g, '&quot;');
-  const description = article.short_description.replace(/"/g, '&quot;');
+  
+  // Use short_description, or fallback to truncated full_content, or default
+  let description = article.short_description || '';
+  if (!description && article.full_content) {
+    // Use first 150 characters of full content as fallback
+    description = article.full_content.substring(0, 150).replace(/\n/g, ' ').trim();
+    if (description.length === 150) {
+      description += '...';
+    }
+  }
+  if (!description) {
+    description = 'Pročitajte najnovije vijesti iz Udruženja Resuscitacijski savjet u Bosni i Hercegovini.';
+  }
+  description = description.replace(/"/g, '&quot;');
+  
   const image = article.image_url || defaultImage;
   const url = `${siteUrl}/news?article=${article.id}`;
   
