@@ -133,56 +133,29 @@ function generateArticleHTML(article, config = DEFAULT_CONFIG) {
     <link rel="canonical" href="${url}" />
     <meta name="robots" content="index, follow" />
     
-    <!-- Preload and redirect script -->
-    <script>
-      // Immediate redirect for regular users (not bots)
-      if (!/bot|crawler|spider|crawling/i.test(navigator.userAgent)) {
-        window.location.replace('${url}');
-      } else {
-        // Small delay for bots to read meta tags
-        setTimeout(() => window.location.replace('${url}'), 500);
-      }
-    </script>
-    
-    <!-- Fallback meta refresh for no-JS -->
-    <noscript>
-      <meta http-equiv="refresh" content="0; url=${url}" />
-    </noscript>
-    
-    <!-- Minimal styling for loading page -->
+    <!-- Minimal styling for bot content -->
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: #F8F9FA;
         margin: 0;
         padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        color: #133d7d;
+        color: #333;
+        line-height: 1.6;
       }
       .container {
-        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
         background: white;
         padding: 40px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        max-width: 500px;
       }
-      .logo { width: 60px; height: 60px; margin: 0 auto 20px; }
-      h1 { margin: 0 0 10px; font-size: 24px; }
-      p { margin: 0 0 20px; color: #666; line-height: 1.5; }
-      .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #133d7d;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: 20px auto;
-      }
-      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      .logo { width: 60px; height: 60px; margin: 0 auto 20px; display: block; }
+      h1 { margin: 0 0 20px; font-size: 28px; color: #133d7d; }
+      .meta { color: #666; font-size: 14px; margin-bottom: 20px; }
+      .content { margin: 20px 0; }
+      .article-image { width: 100%; max-width: 600px; height: auto; margin: 20px 0; border-radius: 8px; }
       .link { color: #133d7d; text-decoration: none; font-weight: 600; }
       .link:hover { text-decoration: underline; }
     </style>
@@ -191,10 +164,12 @@ function generateArticleHTML(article, config = DEFAULT_CONFIG) {
     <div class="container">
       <img src="${config.DEFAULT_IMAGE}" alt="${config.SITE_NAME} Logo" class="logo" />
       <h1>${escapedTitle}</h1>
-      <p>${escapedDescription}</p>
-      <div class="spinner"></div>
-      <p>Učitavanje članka...</p>
-      <a href="${url}" class="link">Kliknite ovdje ako se stranica ne učita automatski</a>
+      <div class="meta">Objavljeno: ${new Date(publishedTime).toLocaleDateString('hr-HR')}</div>
+      ${image !== config.DEFAULT_IMAGE ? `<img src="${image}" alt="${escapedTitle}" class="article-image" />` : ''}
+      <div class="content">
+        <p>${escapedDescription}</p>
+      </div>
+      <p><a href="${url}" class="link">Pročitajte cijeli članak na ${config.SITE_NAME}</a></p>
     </div>
   </body>
 </html>`;
@@ -256,11 +231,10 @@ export default {
       // Check if this is a social media bot or crawler
       const isBot = isSocialMediaBot(userAgent);
       
-      // For regular users, we can optionally pass through to the SPA
-      // For bots, we MUST serve the HTML with meta tags
+      // For regular users, pass through to the SPA
+      // Only serve meta tags HTML to bots/crawlers
       if (!isBot) {
-        // Optional: serve meta tags to all users for consistency
-        // return fetch(request);
+        return fetch(request);
       }
       
       // Fetch article data from Supabase

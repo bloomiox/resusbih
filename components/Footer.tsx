@@ -22,10 +22,10 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
           <div>
             <h3 className="text-xl font-bold mb-2">Pratite nas</h3>
             <div className="flex justify-center md:justify-start space-x-4">
-              <a 
-                href="https://www.facebook.com/profile.php?id=61582409113860" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.facebook.com/profile.php?id=61582409113860"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-brand-red transition-colors flex items-center space-x-1"
                 aria-label="Facebook stranica"
               >
@@ -34,10 +34,10 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
                 </svg>
                 <span>Facebook</span>
               </a>
-              <a 
-                href="https://www.instagram.com/resusbih?igsh=bWt1cnd0YjA3MXF3" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.instagram.com/resusbih?igsh=bWt1cnd0YjA3MXF3"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-brand-red transition-colors flex items-center space-x-1"
                 aria-label="Instagram profil"
               >
@@ -46,10 +46,10 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
                 </svg>
                 <span>Instagram</span>
               </a>
-              <a 
-                href="https://www.linkedin.com/company/resusbih" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.linkedin.com/company/resusbih"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-brand-red transition-colors flex items-center space-x-1"
                 aria-label="LinkedIn stranica"
               >
@@ -63,7 +63,7 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
         </div>
         <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
           <p>
-            <span 
+            <span
               onClick={() => setCurrentPage(Page.Login)}
               className="cursor-pointer hover:text-brand-red transition-colors"
               title="Admin Login"
@@ -71,7 +71,7 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
               &copy;
             </span>{' '}
             {new Date().getFullYear()} Udruženje Resuscitacijski savjet u Bosni i Hercegovini. Sva prava pridržana.
-            <span 
+            <span
               onClick={() => setCurrentPage(Page.Login)}
               className="inline-block w-2 h-2 bg-gray-600 rounded-full ml-2 cursor-pointer hover:bg-brand-red transition-colors"
               title="Admin Login"
