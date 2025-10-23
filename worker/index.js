@@ -230,8 +230,9 @@ export default {
       
       // Check if this is a social media bot or crawler
       const isBot = isSocialMediaBot(userAgent);
+      console.log(`Bot detection result: ${isBot} for User-Agent: ${userAgent}`);
       
-      // For regular users, pass through to the SPA
+      // For regular users, pass through to the origin (static site)
       // Only serve meta tags HTML to bots/crawlers
       if (!isBot) {
         return fetch(request);
